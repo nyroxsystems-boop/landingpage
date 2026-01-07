@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import { Button } from '@/components/ui/Button';
@@ -38,8 +39,15 @@ export function Navbar() {
         >
             <div className="container mx-auto px-4 md:px-6">
                 <div className="flex h-16 items-center justify-between">
-                    <Link href="/" className="text-xl font-bold text-foreground">
-                        <span className="text-primary">Parts</span>union
+                    <Link href="/" className="flex items-center gap-2">
+                        <Image
+                            src="/logo.png"
+                            alt="Partsunion"
+                            width={140}
+                            height={40}
+                            className="h-8 w-auto"
+                            priority
+                        />
                     </Link>
 
                     {/* Desktop Navigation */}
