@@ -16,7 +16,6 @@ const chartData = [
 
 export function DashboardPreview() {
     return (
-    return (
         <div className="w-full max-w-6xl mx-auto h-[260px] sm:h-[500px] lg:h-auto overflow-hidden lg:overflow-visible rounded-xl shadow-2xl border border-slate-200 bg-slate-100">
             <div className="w-[1100px] lg:w-full origin-top-left transform scale-[0.32] sm:scale-[0.6] lg:scale-100">
                 {/* Fake Browser/App Header */}
