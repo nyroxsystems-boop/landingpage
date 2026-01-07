@@ -17,9 +17,40 @@ export function OCRScannerPreview() {
     return (
         <div className="w-full h-full bg-slate-50 border border-slate-200 rounded-2xl overflow-hidden relative font-mono text-xs">
             {/* Camera View Overlay */}
-            <div className="absolute inset-0 z-0 opacity-20">
-                <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&q=80&w=800')] bg-cover bg-center" />
-                <div className="absolute inset-0 bg-blue-100 mix-blend-multiply" />
+            {/* Documentation Background */}
+            <div className="absolute inset-0 z-0 flex items-center justify-center bg-slate-100">
+                {/* Mock Vehicle Registration Document */}
+                <div className="w-[80%] h-[60%] bg-[#fdfbf7] border border-slate-300 shadow-xl rotate-[-2deg] p-4 relative overflow-hidden">
+                    {/* Watermark/Pattern effect */}
+                    <div className="absolute inset-0 opacity-5 bg-[repeating-linear-gradient(45deg,#000_0,#000_1px,transparent_1px,transparent_10px)]" />
+
+                    {/* Document Header */}
+                    <div className="flex justify-between items-start mb-4 border-b border-green-800/20 pb-2">
+                        <div className="text-[8px] uppercase font-bold text-green-900 tracking-wider">Zulassungsbescheinigung Teil I</div>
+                        <div className="w-8 h-8 rounded-full border border-green-800/30 flex items-center justify-center text-[6px] text-green-800 font-serif">D</div>
+                    </div>
+
+                    {/* Document Fields */}
+                    <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-[6px] font-serif text-slate-800 relative z-10">
+                        <div className="space-y-1">
+                            <div className="flex gap-1 items-baseline"><span className="font-bold w-3">B</span> <span className="font-mono bg-yellow-100/50 px-1">2016-08-14</span></div>
+                            <div className="flex gap-1 items-baseline"><span className="font-bold w-3">2.1</span> <span className="font-mono bg-blue-100/50 px-1 border border-blue-200">0603</span></div>
+                            <div className="flex gap-1 items-baseline"><span className="font-bold w-3">2.2</span> <span className="font-mono bg-blue-100/50 px-1 border border-blue-200">BKX</span></div>
+                            <div className="flex gap-1 items-baseline"><span className="font-bold w-3">J</span> <span className="font-mono">M1</span></div>
+                        </div>
+                        <div className="space-y-1">
+                            <div className="flex gap-1 items-baseline"><span className="font-bold w-3">E</span> <span className="font-mono bg-green-100/50 px-1 border border-green-200">WVWZZZAUZGW...1293</span></div>
+                            <div className="flex gap-1 items-baseline"><span className="font-bold w-3">D.1</span> <span className="font-mono">VOLKSWAGEN - VW</span></div>
+                            <div className="flex gap-1 items-baseline"><span className="font-bold w-3">D.3</span> <span className="font-mono">GOLF VII VARIANT</span></div>
+                            <div className="flex gap-1 items-baseline"><span className="font-bold w-3">P.1</span> <span className="font-mono">1968</span></div>
+                        </div>
+                    </div>
+
+                    {/* Stamp/Seal simulation */}
+                    <div className="absolute bottom-4 right-4 w-12 h-12 rounded-full border-2 border-blue-200/50 opacity-50 rotate-12 flex items-center justify-center">
+                        <div className="w-8 h-8 rounded-full border border-blue-200/50" />
+                    </div>
+                </div>
             </div>
 
             {/* Scanning Frame */}
