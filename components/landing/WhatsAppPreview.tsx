@@ -31,7 +31,7 @@ const messages = [
 
 export function WhatsAppPreview() {
     return (
-        <div className="w-[320px] mx-auto bg-black rounded-[40px] p-3 border-[6px] border-slate-900 shadow-2xl relative overflow-hidden">
+        <div className="w-[300px] sm:w-[320px] mx-auto bg-slate-900 rounded-[40px] p-3 border-[6px] border-slate-900 shadow-2xl relative overflow-hidden">
             {/* Notch */}
             <div className="absolute top-0 left-1/2 -translate-x-1/2 h-6 w-32 bg-slate-900 rounded-b-xl z-20" />
 
@@ -54,7 +54,7 @@ export function WhatsAppPreview() {
             </div>
 
             {/* Chat Area */}
-            <div className="bg-[#E5DDD5] h-[450px] p-4 flex flex-col gap-3 overflow-hidden relative">
+            <div className="bg-[#E5DDD5] h-[400px] sm:h-[450px] p-4 flex flex-col gap-3 overflow-hidden relative">
                 <div className="absolute inset-0 opacity-10 bg-[url('https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png')]" />
 
                 {messages.map((msg, i) => (
@@ -65,8 +65,8 @@ export function WhatsAppPreview() {
                         viewport={{ once: true }}
                         transition={{ delay: msg.delay, duration: 0.4 }}
                         className={`relative z-10 max-w-[85%] p-2 rounded-lg text-sm shadow-sm ${msg.type === 'user'
-                                ? 'bg-[#DCF8C6] self-end rounded-tr-none'
-                                : 'bg-white self-start rounded-tl-none'
+                            ? 'bg-[#DCF8C6] self-end rounded-tr-none'
+                            : 'bg-white self-start rounded-tl-none'
                             }`}
                     >
                         {msg.image && (
