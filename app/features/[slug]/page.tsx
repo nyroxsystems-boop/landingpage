@@ -121,7 +121,7 @@ export default async function FeatureDetailPage({ params }: Props) {
 
                     {/* Right Column: Animated Visual */}
                     <div className="sticky top-32">
-                        <div className="relative aspect-square lg:aspect-[4/5] bg-slate-900 rounded-3xl overflow-hidden border border-border/50 shadow-[0_32px_64px_-16px_rgba(0,0,0,0.5)] flex items-center justify-center">
+                        <div className="relative aspect-square lg:aspect-[4/5] bg-slate-50 rounded-3xl overflow-hidden border border-border/50 shadow-[0_32px_64px_-16px_rgba(0,0,0,0.1)] flex items-center justify-center">
                             {/* Background Glow */}
                             <div className="absolute -top-1/4 -right-1/4 w-full h-full bg-primary/20 blur-[120px] rounded-full" />
                             <div className="absolute -bottom-1/4 -left-1/4 w-full h-full bg-blue-500/10 blur-[120px] rounded-full" />
