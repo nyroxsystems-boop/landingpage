@@ -3,10 +3,10 @@ import { featureData } from '@/lib/feature-data';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { Button } from '@/components/ui/Button';
-import { ArrowLeft, CheckCircle2, Zap } from 'lucide-react';
+import { ArrowLeft, ArrowRight, CheckCircle2, Zap } from 'lucide-react';
 
 interface Props {
-    params: { slug: string };
+    params: Promise<{ slug: string }>;
 }
 
 export async function generateStaticParams() {
@@ -51,84 +51,119 @@ export default async function FeatureDetailPage({ params }: Props) {
     }
 
     const Icon = feature.icon;
+    const isValueProp = feature.category === 'value';
 
     return (
         <div className="pt-24 pb-20 overflow-x-hidden">
+            {/* Background */}
+            <div className="fixed inset-0 bg-gradient-to-b from-muted/20 via-background to-background -z-10" />
+            <div className="fixed top-1/3 left-1/2 -translate-x-1/2 w-[800px] h-[600px] bg-primary/5 blur-[150px] rounded-full -z-10" />
+
             <div className="container mx-auto px-4 md:px-6">
-                <Link href="/features" className="inline-flex items-center text-sm text-muted-foreground hover:text-primary mb-8 transition-colors group">
+                <Link
+                    href="/features"
+                    className="inline-flex items-center text-sm text-muted-foreground hover:text-primary mb-8 transition-colors group"
+                >
                     <ArrowLeft className="mr-2 h-4 w-4 transition-transform group-hover:-translate-x-1" />
                     Zurück zur Übersicht
                 </Link>
 
-                <div className="grid lg:grid-cols-2 gap-12 lg:gap-24 items-start">
+                <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-start">
 
                     {/* Left Column: Content */}
-                    <div className="space-y-10">
+                    <div className="space-y-8">
+                        {/* Header */}
                         <div>
-                            <div className="inline-flex items-center justify-center p-3 rounded-xl bg-primary/10 text-primary mb-6">
+                            <div className={`inline-flex items-center justify-center p-3 rounded-xl mb-6 ${isValueProp ? 'bg-accent/10 text-accent' : 'bg-primary/10 text-primary'
+                                }`}>
                                 <Icon className="h-8 w-8" />
                             </div>
-                            <h1 className="text-4xl md:text-5xl font-bold mb-6 tracking-tight text-foreground">{feature.title}</h1>
-                            <p className="text-xl text-muted-foreground mb-8 leading-relaxed">
+                            <span className={`inline-block ml-4 py-1 px-3 rounded-full text-xs font-medium ${isValueProp
+                                    ? 'bg-accent/10 text-accent'
+                                    : 'bg-primary/10 text-primary'
+                                }`}>
+                                {isValueProp ? 'Vorteil' : 'Core Feature'}
+                            </span>
+                            <h1 className="text-3xl md:text-5xl font-bold mt-4 mb-6 tracking-tight text-foreground" style={{ fontFamily: 'var(--font-display)' }}>
+                                {feature.title}
+                            </h1>
+                            <p className="text-xl text-muted-foreground leading-relaxed">
                                 {feature.description}
                             </p>
                         </div>
 
-                        <div className="bg-muted/30 border border-border rounded-2xl p-8">
+                        {/* Features List */}
+                        <div className="glass border border-border/50 rounded-2xl p-6 md:p-8">
                             <h3 className="text-lg font-bold mb-6 flex items-center gap-2">
-                                <CheckCircle2 className="h-5 w-5 text-primary" />
+                                <CheckCircle2 className="h-5 w-5 text-success" />
                                 Was Sie bekommen
                             </h3>
                             <ul className="grid sm:grid-cols-2 gap-4">
                                 {feature.features.map((item, i) => (
                                     <li key={i} className="flex items-start gap-3">
-                                        <CheckCircle2 className="h-5 w-5 text-emerald-500 mt-0.5 shrink-0" />
+                                        <CheckCircle2 className="h-5 w-5 text-success mt-0.5 shrink-0" />
                                         <span className="text-foreground/80 text-sm">{item}</span>
                                     </li>
                                 ))}
                             </ul>
                         </div>
 
+                        {/* Technical Details */}
                         <div>
-                            <h3 className="text-2xl font-bold mb-4">Ihre Transformation</h3>
+                            <h3 className="text-2xl font-bold mb-4" style={{ fontFamily: 'var(--font-display)' }}>
+                                So funktioniert's
+                            </h3>
                             <div className="prose dark:prose-invert max-w-none text-muted-foreground">
                                 <p>{feature.technicalDetails}</p>
                             </div>
                         </div>
 
-                        <div className="bg-blue-50 dark:bg-blue-900/10 border border-blue-100 dark:border-blue-900/30 p-8 rounded-2xl relative overflow-hidden group">
+                        {/* Benefit Box */}
+                        <div className={`p-6 md:p-8 rounded-2xl relative overflow-hidden group ${isValueProp
+                                ? 'bg-accent/5 border border-accent/20'
+                                : 'bg-primary/5 border border-primary/20'
+                            }`}>
                             <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:scale-110 transition-transform">
                                 <Icon size={80} />
                             </div>
                             <div className="relative z-10">
-                                <h4 className="font-bold text-primary mb-2 flex items-center gap-2">
-                                    <Zap className="h-4 w-4 fill-primary" />
+                                <h4 className={`font-bold mb-2 flex items-center gap-2 ${isValueProp ? 'text-accent' : 'text-primary'
+                                    }`}>
+                                    <Zap className="h-4 w-4" />
                                     Der Partsunion Vorteil
                                 </h4>
-                                <p className="text-foreground/80 leading-relaxed font-medium">{feature.benefit}</p>
+                                <p className="text-foreground/80 leading-relaxed font-medium">
+                                    {feature.benefit}
+                                </p>
                             </div>
                         </div>
 
+                        {/* CTA Buttons */}
                         <div className="flex flex-col sm:flex-row gap-4 pt-4">
-                            <Button variant="primary" size="lg" className="h-14 px-8 text-lg shadow-xl shadow-primary/20">
-                                Jetzt Demo anfordern
-                            </Button>
-                            <Button variant="outline" size="lg" className="h-14 px-8 text-lg">
-                                Preis ansehen
-                            </Button>
+                            <Link href="/#beratung">
+                                <Button
+                                    variant="primary"
+                                    size="lg"
+                                    className="h-14 px-8 text-lg gradient-primary shadow-xl shadow-primary/20 group"
+                                >
+                                    Beratungstermin buchen
+                                    <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
+                                </Button>
+                            </Link>
                         </div>
                     </div>
 
                     {/* Right Column: Animated Visual */}
                     <div className="sticky top-32">
-                        <div className="relative aspect-square lg:aspect-[4/5] bg-slate-50 rounded-3xl overflow-hidden border border-border/50 shadow-[0_32px_64px_-16px_rgba(0,0,0,0.1)] flex items-center justify-center">
+                        <div className="relative aspect-square lg:aspect-[4/5] glass rounded-3xl overflow-hidden border border-border/50 shadow-2xl flex items-center justify-center">
                             {/* Background Glow */}
-                            <div className="absolute -top-1/4 -right-1/4 w-full h-full bg-primary/20 blur-[120px] rounded-full" />
+                            <div className={`absolute -top-1/4 -right-1/4 w-full h-full blur-[120px] rounded-full ${isValueProp ? 'bg-accent/20' : 'bg-primary/20'
+                                }`} />
                             <div className="absolute -bottom-1/4 -left-1/4 w-full h-full bg-blue-500/10 blur-[120px] rounded-full" />
 
                             <div className="relative z-10 w-full h-full p-6 md:p-8">
                                 {previewMap[finalParams.slug] || (
-                                    <div className="flex flex-col items-center justify-center h-full text-white/20">
+                                    <div className="flex flex-col items-center justify-center h-full text-muted-foreground/30">
                                         <Icon size={120} className="mb-4" />
                                         <p className="font-mono text-sm uppercase tracking-widest">Preview Pending</p>
                                     </div>
@@ -136,9 +171,12 @@ export default async function FeatureDetailPage({ params }: Props) {
                             </div>
 
                             {/* Decorative Label */}
-                            <div className="absolute top-6 left-6 flex items-center gap-2 px-3 py-1.5 bg-white/5 backdrop-blur-md border border-white/10 rounded-full z-20">
-                                <div className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
-                                <span className="text-[10px] font-bold text-white/50 tracking-widest uppercase">Live System Preview</span>
+                            <div className="absolute top-6 left-6 flex items-center gap-2 px-3 py-1.5 glass rounded-full z-20">
+                                <div className={`h-2 w-2 rounded-full animate-pulse ${isValueProp ? 'bg-accent' : 'bg-primary'
+                                    }`} />
+                                <span className="text-[10px] font-bold text-muted-foreground tracking-widest uppercase">
+                                    {isValueProp ? 'Vorteil' : 'Live System Preview'}
+                                </span>
                             </div>
                         </div>
 

@@ -1,20 +1,28 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { DM_Sans, Outfit } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const dmSans = DM_Sans({
+  variable: "--font-dm-sans",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const outfit = Outfit({
+  variable: "--font-outfit",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
 });
 
 export const metadata: Metadata = {
   title: "Partsunion - Das Betriebssystem für den Teilehandel",
-  description: "Die All-in-One Lösung für Autoteile-Händler. Warenwirtschaft, Bot-Automatisierung und Cloud-SaaS.",
+  description: "Die All-in-One Lösung für Autoteile-Händler. KI-Automatisierung, Warenwirtschaft und 24/7 WhatsApp Bot für mehr Umsatz.",
+  keywords: "Autoteile, Teilehandel, KI, WhatsApp Bot, Warenwirtschaft, OEM, Ersatzteile, Automatisierung",
+  openGraph: {
+    title: "Partsunion - Das Betriebssystem für den Teilehandel",
+    description: "KI-gestützte Automatisierung für Autoteilehändler",
+    type: "website",
+  },
 };
 
 import { Navbar } from "@/components/layout/Navbar";
@@ -26,9 +34,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="de">
+    <html lang="de" className="dark">
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+      </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col min-h-screen`}
+        className={`${dmSans.variable} ${outfit.variable} antialiased flex flex-col min-h-screen bg-background text-foreground`}
       >
         <Navbar />
         <main className="flex-1">
@@ -39,4 +51,3 @@ export default function RootLayout({
     </html>
   );
 }
-

@@ -1,57 +1,98 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Bot, Package, Cloud } from 'lucide-react';
-
-const features = [
-    {
-        icon: Bot,
-        title: 'Autoteile Bot',
-        description: 'Automatische Identifikation von Ersatzteilen, Preisvergleich und Bestellvorschläge basierend auf KI-Analyse.',
-    },
-    {
-        icon: Package,
-        title: 'Warenwirtschaft',
-        description: 'Vollständige Kontrolle über Lagerbestände, Bestellungen und Lieferantenmanagement in einem zentralen System.',
-    },
-    {
-        icon: Cloud,
-        title: 'SaaS Cloud',
-        description: 'Greifen Sie von überall auf Ihre Unternehmensdaten zu. Sicher, skalierbar und immer verfügbar.',
-    },
-];
+import { Bot, Package, Cloud, ArrowRight } from 'lucide-react';
+import Link from 'next/link';
+import { getCoreFeatures } from '@/lib/feature-data';
 
 export function Features() {
+    const coreFeatures = getCoreFeatures().slice(0, 6);
+
     return (
-        <section id="features" className="py-20 md:py-32 bg-muted/30">
-            <div className="container mx-auto px-4 md:px-6">
-                <div className="text-center mb-16">
-                    <h2 className="text-3xl md:text-5xl font-bold mb-4">Alles was Sie brauchen</h2>
-                    <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-                        Partsunion vereint modernste Technologie mit jahrelanger Branchenerfahrung.
-                    </p>
+        <section id="features" className="py-24 md:py-32 relative overflow-hidden">
+            {/* Background */}
+            <div className="absolute inset-0 bg-gradient-to-b from-muted/30 via-background to-background" />
+            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
+
+            <div className="container mx-auto px-4 md:px-6 relative z-10">
+                {/* Section Header */}
+                <div className="text-center mb-16 max-w-3xl mx-auto">
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5 }}
+                        viewport={{ once: true }}
+                    >
+                        <span className="inline-block py-1.5 px-4 rounded-full glass text-sm font-medium text-primary mb-4">
+                            Core Features
+                        </span>
+                        <h2 className="text-3xl md:text-5xl font-bold mb-6" style={{ fontFamily: 'var(--font-display)' }}>
+                            Alles was Sie <span className="text-gradient">brauchen</span>
+                        </h2>
+                        <p className="text-lg text-muted-foreground">
+                            Partsunion vereint modernste KI-Technologie mit jahrelanger Branchenerfahrung im Autoteilehandel.
+                        </p>
+                    </motion.div>
                 </div>
 
-                <div className="grid md:grid-cols-3 gap-8">
-                    {features.map((feature, index) => (
-                        <motion.div
-                            key={index}
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.5, delay: index * 0.1 }}
-                            viewport={{ once: true }}
-                            className="p-8 rounded-2xl bg-background border border-border hover:border-primary/50 transition-colors shadow-sm"
-                        >
-                            <div className="h-12 w-12 bg-primary/10 rounded-lg flex items-center justify-center mb-6 text-primary">
-                                <feature.icon size={24} />
-                            </div>
-                            <h3 className="text-xl font-bold mb-3">{feature.title}</h3>
-                            <p className="text-muted-foreground leading-relaxed">
-                                {feature.description}
-                            </p>
-                        </motion.div>
-                    ))}
+                {/* Features Grid */}
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+                    {coreFeatures.map((feature, index) => {
+                        const Icon = feature.icon;
+                        return (
+                            <motion.div
+                                key={feature.slug}
+                                initial={{ opacity: 0, y: 30 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.5, delay: index * 0.1 }}
+                                viewport={{ once: true }}
+                            >
+                                <Link
+                                    href={`/features/${feature.slug}`}
+                                    className="group block h-full"
+                                >
+                                    <div className="h-full p-6 lg:p-8 rounded-2xl glass border border-border/50 hover:border-primary/30 transition-all card-hover">
+                                        {/* Icon */}
+                                        <div className="h-14 w-14 bg-primary/10 rounded-xl flex items-center justify-center mb-6 text-primary group-hover:scale-110 transition-transform">
+                                            <Icon size={28} />
+                                        </div>
+
+                                        {/* Content */}
+                                        <h3 className="text-xl font-bold mb-3 group-hover:text-primary transition-colors">
+                                            {feature.title}
+                                        </h3>
+                                        <p className="text-muted-foreground leading-relaxed mb-4 line-clamp-2">
+                                            {feature.description}
+                                        </p>
+
+                                        {/* CTA */}
+                                        <div className="flex items-center text-sm font-medium text-primary">
+                                            <span>Details ansehen</span>
+                                            <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                                        </div>
+                                    </div>
+                                </Link>
+                            </motion.div>
+                        );
+                    })}
                 </div>
+
+                {/* More Features Link */}
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.4 }}
+                    viewport={{ once: true }}
+                    className="text-center mt-12"
+                >
+                    <Link
+                        href="/features"
+                        className="inline-flex items-center gap-2 py-3 px-6 rounded-full glass border border-border/50 hover:border-primary/50 transition-all text-sm font-medium"
+                    >
+                        Alle Features ansehen
+                        <ArrowRight className="h-4 w-4" />
+                    </Link>
+                </motion.div>
             </div>
         </section>
     );
