@@ -39,7 +39,7 @@ export function Footer() {
                                 alt="Partsunion"
                                 width={160}
                                 height={48}
-                                className="h-10 w-auto brightness-0 invert opacity-90 hover:opacity-100 transition-opacity"
+                                className="h-10 w-auto opacity-90 hover:opacity-100 transition-opacity"
                             />
                         </Link>
                         <p className="text-muted-foreground text-sm mb-6 max-w-xs">
