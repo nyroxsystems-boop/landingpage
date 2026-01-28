@@ -187,9 +187,7 @@ export function TechTabs() {
                                             {tab.id === 'bot' ? (
                                                 <WhatsAppPreview />
                                             ) : (
-                                                <div className="scale-[0.85] origin-center -my-12">
-                                                    <WAWIPreview />
-                                                </div>
+                                                <WAWIPreview />
                                             )}
                                         </div>
 

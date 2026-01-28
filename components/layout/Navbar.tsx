@@ -128,10 +128,10 @@ export function Navbar() {
                         </Link>
 
                         {/* Login Button */}
-                        <Link href="/login" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors flex items-center gap-1">
+                        <a href="https://app.partsunion.de/auth" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors flex items-center gap-1">
                             <LogIn className="h-4 w-4" />
                             Login
-                        </Link>
+                        </a>
 
                         <Button variant="primary" size="sm" className="gradient-primary shadow-md shadow-primary/20">
                             Beratung vereinbaren
@@ -188,14 +188,14 @@ export function Navbar() {
                         >
                             Kontakt
                         </Link>
-                        <Link
-                            href="/login"
+                        <a
+                            href="https://app.partsunion.de/auth"
                             className="text-sm font-medium text-foreground hover:text-primary flex items-center gap-2"
                             onClick={() => setIsMobileMenuOpen(false)}
                         >
                             <LogIn className="h-4 w-4" />
                             Login
-                        </Link>
+                        </a>
                         <Button className="w-full mt-4 gradient-primary">Beratung vereinbaren</Button>
                     </div>
                 </div>

@@ -25,7 +25,7 @@ export default function ContactPage() {
                         <div>
                             <h2 className="text-2xl font-bold mb-6">Schreiben Sie uns</h2>
                             <form className="space-y-6">
-                                <div className="grid grid-cols-2 gap-6">
+                                <div className="grid sm:grid-cols-2 gap-4 sm:gap-6">
                                     <div className="space-y-2">
                                         <label className="text-sm font-medium">Vorname</label>
                                         <input className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2" placeholder="Max" />
