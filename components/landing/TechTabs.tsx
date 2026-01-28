@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Bot, Database, ScanLine, Brain, ShoppingCart, Truck, Zap, Globe } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { WhatsAppPreview } from './WhatsAppPreview';
-import { DashboardPreview } from './DashboardPreview';
+import { WAWIPreview } from './WAWIPreview';
 
 const tabs = [
     {
@@ -188,7 +188,7 @@ export function TechTabs() {
                                                 <WhatsAppPreview />
                                             ) : (
                                                 <div className="scale-[0.85] origin-center -my-12">
-                                                    <DashboardPreview />
+                                                    <WAWIPreview />
                                                 </div>
                                             )}
                                         </div>
