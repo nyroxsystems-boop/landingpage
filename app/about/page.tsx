@@ -1,10 +1,10 @@
 import { Metadata } from 'next';
-import { Target, Users, History, Brain, Cpu, Sparkles, ArrowRight } from 'lucide-react';
+import { Target, Users, History, Brain, Cpu, Sparkles, ArrowRight, Quote } from 'lucide-react';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
     title: 'Über Uns - Partsunion',
-    description: 'Unsere Mission: Den Autoteilehandel mit KI-Technologie revolutionieren.',
+    description: 'Unsere Mission: Den Autoteilehandel mit KI-Technologie revolutionieren. Ein Team aus Branchenexperten und Software-Entwicklern.',
 };
 
 export default function AboutPage() {
@@ -20,31 +20,110 @@ export default function AboutPage() {
                         Über Partsunion
                     </span>
                     <h1 className="text-4xl md:text-6xl font-bold mb-6" style={{ fontFamily: 'var(--font-display)' }}>
-                        Unsere <span className="text-gradient">Mission</span>
+                        Von Teilehändlern.<br />
+                        <span className="text-gradient">Für Teilehändler.</span>
                     </h1>
                     <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-                        Wir bauen das intelligente Betriebssystem für den modernen Autoteilehandel.
+                        Wir kennen die Branche aus erster Hand – und bauen die Software, die wir selbst gebraucht hätten.
                     </p>
                 </div>
             </section>
 
-            {/* Story Section */}
+            {/* Founder Story Section */}
+            <section className="py-16 md:py-24 relative">
+                <div className="absolute inset-0 bg-gradient-to-b from-background via-muted/20 to-background" />
+
+                <div className="container mx-auto px-4 md:px-6 max-w-5xl relative z-10">
+                    <div className="grid md:grid-cols-2 gap-12 items-center">
+                        {/* Story */}
+                        <div>
+                            <span className="inline-block py-1.5 px-4 rounded-full bg-accent/10 border border-accent/20 text-accent text-sm font-medium mb-6">
+                                Die Gründungsgeschichte
+                            </span>
+                            <h2 className="text-3xl md:text-4xl font-bold mb-6" style={{ fontFamily: 'var(--font-display)' }}>
+                                Entstanden aus der <span className="text-gradient">Praxis</span>
+                            </h2>
+                            <div className="space-y-4 text-muted-foreground leading-relaxed">
+                                <p>
+                                    Die Idee zu Partsunion entstand aus echter Frustration. <strong className="text-foreground">Mitgründer Elias</strong> führte
+                                    selbst einen erfolgreichen Teilehandel mit über <strong className="text-foreground">6.000 verkauften Teilen pro Monat</strong>.
+                                </p>
+                                <p>
+                                    Er wusste aus täglicher Erfahrung: Die OEM-Suche ist komplex und fehleranfällig.
+                                    Das richtige Teil zu identifizieren kostet Zeit – und falsch identifizierte Teile führen
+                                    zu frustrierenden Retouren, die Marge und Kundenzufriedenheit kosten.
+                                </p>
+                                <p>
+                                    Elias suchte nach einer Lösung, die er selbst nutzen würde. Als er keine fand,
+                                    beschloss er, sie selbst zu bauen.
+                                </p>
+                            </div>
+                        </div>
+
+                        {/* Quote Card */}
+                        <div className="relative">
+                            <div className="glass p-8 rounded-2xl border border-border/50">
+                                <Quote className="h-10 w-10 text-primary/30 mb-4" />
+                                <blockquote className="text-xl font-medium text-foreground mb-6 leading-relaxed">
+                                    „Ich habe jeden Tag gesehen, wie viel Zeit mein Team mit manueller OEM-Suche verschwendet
+                                    und wie viele Retouren auf Identifikationsfehler zurückgehen. Das musste aufhören."
+                                </blockquote>
+                                <div className="flex items-center gap-4">
+                                    <div className="h-12 w-12 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold">
+                                        E
+                                    </div>
+                                    <div>
+                                        <div className="font-bold text-foreground">Elias</div>
+                                        <div className="text-sm text-muted-foreground">Mitgründer & Branchenexperte</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* Team Section */}
             <section className="py-16 md:py-24">
                 <div className="container mx-auto px-4 md:px-6 max-w-4xl">
-                    <div className="prose prose-lg dark:prose-invert mx-auto text-muted-foreground">
-                        <p className="text-lg leading-relaxed">
-                            Partsunion entstand aus der Praxis. Wir haben gesehen, wie Autoteilehändler in einer Flut
-                            von manueller Arbeit, fehlerhaften Bestellungen und veralteter Software ertrinken.
+                    <div className="text-center mb-12">
+                        <h2 className="text-3xl md:text-4xl font-bold mb-4" style={{ fontFamily: 'var(--font-display)' }}>
+                            Unser Team
+                        </h2>
+                        <p className="text-muted-foreground max-w-xl mx-auto">
+                            Vier Leute. Eine Mission. Den Teilehandel revolutionieren.
                         </p>
-                        <p className="text-lg leading-relaxed">
-                            Unsere Antwort darauf ist eine radikale Automatisierung der Kernprozesse. Wir glauben,
-                            dass künstliche Intelligenz nicht nur ein Buzzword ist, sondern das Werkzeug, das den
-                            Teilehandel transformiert.
-                        </p>
-                        <p className="text-lg leading-relaxed">
-                            <strong className="text-foreground">Unsere Kunden sind Autoteilehändler</strong> - vom inhabergeführten
-                            Betrieb bis zum Großhändler mit mehreren Standorten. Wir verstehen die Branche, weil wir
-                            aus ihr kommen.
+                    </div>
+
+                    <div className="grid md:grid-cols-2 gap-8">
+                        {/* Software Entwickler */}
+                        <div className="glass p-8 rounded-2xl border border-border/50 card-hover">
+                            <div className="h-16 w-16 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-6 text-primary">
+                                <Cpu size={32} />
+                            </div>
+                            <h3 className="text-xl font-bold mb-2 text-center">2 Software-Entwickler</h3>
+                            <p className="text-muted-foreground text-center">
+                                Bauen die KI-Engine, die Fahrzeugscheine liest, OEM-Nummern findet und
+                                Angebote in Sekunden erstellt.
+                            </p>
+                        </div>
+
+                        {/* Sales */}
+                        <div className="glass p-8 rounded-2xl border border-border/50 card-hover">
+                            <div className="h-16 w-16 bg-accent/10 rounded-2xl flex items-center justify-center mx-auto mb-6 text-accent">
+                                <Users size={32} />
+                            </div>
+                            <h3 className="text-xl font-bold mb-2 text-center">2 Sales-Experten</h3>
+                            <p className="text-muted-foreground text-center">
+                                Verstehen die Branche, sprechen die Sprache der Händler und sorgen dafür,
+                                dass Partsunion echte Probleme löst.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div className="mt-8 p-6 glass rounded-xl border border-success/20 text-center">
+                        <p className="text-lg font-medium text-foreground">
+                            <span className="text-success">✓</span> Elias vertraut auf Partsunion – jeden Tag in seinem eigenen Teilehandel.
                         </p>
                     </div>
                 </div>
@@ -72,9 +151,9 @@ export default function AboutPage() {
                             <div className="h-14 w-14 bg-primary/10 rounded-xl flex items-center justify-center mx-auto mb-6 text-primary">
                                 <Brain size={28} />
                             </div>
-                            <h3 className="text-xl font-bold mb-3 text-center">Natural Language Understanding</h3>
+                            <h3 className="text-xl font-bold mb-3 text-center">Natural Language</h3>
                             <p className="text-muted-foreground text-center text-sm">
-                                Unsere NLU-Engine versteht Mechaniker-Slang, Sprachnachrichten und informelle Anfragen.
+                                Versteht "Mechaniker-Slang", Sprachnachrichten und informelle Anfragen wie ein echter Kollege.
                             </p>
                         </div>
 
@@ -92,50 +171,9 @@ export default function AboutPage() {
                             <div className="h-14 w-14 bg-success/10 rounded-xl flex items-center justify-center mx-auto mb-6 text-success">
                                 <Sparkles size={28} />
                             </div>
-                            <h3 className="text-xl font-bold mb-3 text-center">OEM-Matching Engine</h3>
+                            <h3 className="text-xl font-bold mb-3 text-center">OEM-Matching</h3>
                             <p className="text-muted-foreground text-center text-sm">
                                 Proprietärer Algorithmus für präzises Teile-Matching gegen Millionen von Datensätzen.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            {/* Values Section */}
-            <section className="py-16 md:py-24">
-                <div className="container mx-auto px-4 md:px-6 max-w-5xl">
-                    <div className="text-center mb-16">
-                        <h2 className="text-3xl md:text-4xl font-bold mb-4" style={{ fontFamily: 'var(--font-display)' }}>
-                            Was uns antreibt
-                        </h2>
-                    </div>
-
-                    <div className="grid md:grid-cols-3 gap-8 text-center">
-                        <div className="p-6">
-                            <div className="h-16 w-16 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-6 text-primary">
-                                <Target size={32} />
-                            </div>
-                            <h3 className="text-xl font-bold mb-2">Fokus</h3>
-                            <p className="text-muted-foreground">
-                                100% Konzentration auf den Automotive Aftermarket. Wir verstehen Ihre Teile und Ihre Kunden.
-                            </p>
-                        </div>
-                        <div className="p-6">
-                            <div className="h-16 w-16 bg-success/10 rounded-2xl flex items-center justify-center mx-auto mb-6 text-success">
-                                <Users size={32} />
-                            </div>
-                            <h3 className="text-xl font-bold mb-2">Team</h3>
-                            <p className="text-muted-foreground">
-                                Ein Mix aus erfahrenen KFZ-Experten und Senior Software Engineers.
-                            </p>
-                        </div>
-                        <div className="p-6">
-                            <div className="h-16 w-16 bg-warning/10 rounded-2xl flex items-center justify-center mx-auto mb-6 text-warning">
-                                <History size={32} />
-                            </div>
-                            <h3 className="text-xl font-bold mb-2">Zukunft</h3>
-                            <p className="text-muted-foreground">
-                                Kontinuierliche Weiterentwicklung. Nächster Stop: Predictive Ordering und erweiterte KI.
                             </p>
                         </div>
                     </div>
@@ -149,10 +187,10 @@ export default function AboutPage() {
 
                 <div className="container mx-auto px-4 text-center relative z-10">
                     <h2 className="text-3xl md:text-4xl font-bold text-white mb-6" style={{ fontFamily: 'var(--font-display)' }}>
-                        Bereit für die Transformation?
+                        Lassen Sie uns sprechen
                     </h2>
                     <p className="text-white/80 text-lg max-w-xl mx-auto mb-8">
-                        Lassen Sie uns in einem unverbindlichen Gespräch herausfinden, wie Partsunion Ihren Teilehandel automatisieren kann.
+                        Wir zeigen Ihnen in 15 Minuten, wie Partsunion Ihren Teilehandel transformieren kann.
                     </p>
                     <Link
                         href="/#beratung"
