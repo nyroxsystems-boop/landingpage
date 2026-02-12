@@ -1,7 +1,6 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import Image from 'next/image';
 
 const messages = [
     {
@@ -13,7 +12,7 @@ const messages = [
     {
         type: 'user',
         content: null,
-        image: 'https://images.unsplash.com/photo-1550523119-92d9d9657597?auto=format&fit=crop&q=80&w=300', // Generic car part/doc placeholder
+        image: 'fahrzeugschein',
         delay: 0.5
     },
     {
@@ -28,6 +27,70 @@ const messages = [
         delay: 3.5
     }
 ];
+
+function FahrzeugscheinPreview() {
+    return (
+        <div className="relative h-32 w-48 rounded-md overflow-hidden bg-white p-2 shadow-sm">
+            {/* Header stripe */}
+            <div className="h-3 w-full bg-teal-500 rounded-sm mb-1.5" />
+            <div className="text-[6px] font-bold text-gray-700 mb-1">Zulassungsbescheinigung Teil I</div>
+
+            {/* Fields */}
+            <div className="space-y-1">
+                <div className="flex gap-2">
+                    <div className="flex-1">
+                        <div className="text-[5px] text-gray-400">HSN</div>
+                        <div className="h-2.5 bg-gray-100 rounded-sm flex items-center px-1">
+                            <span className="text-[6px] font-mono text-gray-600">0603</span>
+                        </div>
+                    </div>
+                    <div className="flex-1">
+                        <div className="text-[5px] text-gray-400">TSN</div>
+                        <div className="h-2.5 bg-gray-100 rounded-sm flex items-center px-1">
+                            <span className="text-[6px] font-mono text-gray-600">BNK</span>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div className="text-[5px] text-gray-400">FIN / VIN</div>
+                    <div className="h-2.5 bg-gray-100 rounded-sm flex items-center px-1">
+                        <span className="text-[6px] font-mono text-gray-600">WVWZZZ1KZAW1923XX</span>
+                    </div>
+                </div>
+                <div className="flex gap-2">
+                    <div className="flex-1">
+                        <div className="text-[5px] text-gray-400">Erstzulassung</div>
+                        <div className="h-2.5 bg-gray-100 rounded-sm flex items-center px-1">
+                            <span className="text-[6px] font-mono text-gray-600">15.03.2019</span>
+                        </div>
+                    </div>
+                    <div className="flex-1">
+                        <div className="text-[5px] text-gray-400">Leistung</div>
+                        <div className="h-2.5 bg-gray-100 rounded-sm flex items-center px-1">
+                            <span className="text-[6px] font-mono text-gray-600">110 kW</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* Scan animation overlay */}
+            <motion.div
+                className="absolute inset-0 bg-gradient-to-b from-blue-400/20 via-transparent to-transparent"
+                initial={{ y: '-100%' }}
+                whileInView={{ y: '100%' }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.8, duration: 1.2, ease: 'linear' }}
+            />
+            <motion.div
+                className="absolute left-0 right-0 h-0.5 bg-blue-400/60"
+                initial={{ top: 0, opacity: 0 }}
+                whileInView={{ top: '100%', opacity: [0, 1, 1, 0] }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.8, duration: 1.2, ease: 'linear' }}
+            />
+        </div>
+    );
+}
 
 export function WhatsAppPreview() {
     return (
@@ -69,10 +132,9 @@ export function WhatsAppPreview() {
                             : 'bg-white self-start rounded-tl-none'
                             }`}
                     >
-                        {msg.image && (
-                            <div className="mb-1 rounded-md overflow-hidden relative h-32 w-48">
-                                <div className="absolute inset-0 bg-gray-200 animate-pulse" /> {/* Placeholder while loading real image */}
-                                <img src={msg.image} alt="Upload" className="object-cover h-full w-full relative z-10" />
+                        {msg.image === 'fahrzeugschein' && (
+                            <div className="mb-1">
+                                <FahrzeugscheinPreview />
                             </div>
                         )}
                         {msg.content && <p className="text-gray-800 whitespace-pre-line">{msg.content}</p>}

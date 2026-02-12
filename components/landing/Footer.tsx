@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { Mail, Phone, MapPin, Linkedin, Twitter } from 'lucide-react';
+import { Mail } from 'lucide-react';
 
 const footerLinks = {
     product: [
@@ -37,9 +37,9 @@ export function Footer() {
                             <Image
                                 src="/logo.png"
                                 alt="Partsunion"
-                                width={160}
-                                height={48}
-                                className="h-10 w-auto opacity-90 hover:opacity-100 transition-opacity"
+                                width={200}
+                                height={60}
+                                className="h-12 md:h-14 w-auto opacity-90 hover:opacity-100 transition-opacity"
                             />
                         </Link>
                         <p className="text-muted-foreground text-sm mb-6 max-w-xs">
@@ -49,13 +49,9 @@ export function Footer() {
 
                         {/* Contact Info */}
                         <div className="space-y-3 text-sm">
-                            <a href="mailto:anfrage@partsunion.de" className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors">
+                            <a href="mailto:info@partsunion.de" className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors">
                                 <Mail className="h-4 w-4" />
-                                anfrage@partsunion.de
-                            </a>
-                            <a href="tel:+493012345678" className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors">
-                                <Phone className="h-4 w-4" />
-                                +49 30 12345678
+                                info@partsunion.de
                             </a>
                         </div>
                     </div>

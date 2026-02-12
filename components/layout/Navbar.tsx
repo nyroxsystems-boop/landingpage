@@ -45,9 +45,9 @@ export function Navbar() {
                         <Image
                             src="/logo.png"
                             alt="Partsunion"
-                            width={200}
-                            height={60}
-                            className="h-12 w-auto"
+                            width={240}
+                            height={72}
+                            className="h-14 md:h-16 w-auto"
                             priority
                         />
                     </Link>

@@ -13,6 +13,11 @@ import {
     CheckCircle2
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { ScalabilityVisual } from '@/components/features/ScalabilityVisual';
+import { TwentyFourSevenVisual } from '@/components/features/TwentyFourSevenVisual';
+import { SpeedVisual } from '@/components/features/SpeedVisual';
+import { OEMVisual } from '@/components/features/OEMVisual';
+import { InvoiceVisual } from '@/components/features/InvoiceVisual';
 
 const valueProps = [
     {
@@ -28,7 +33,8 @@ const valueProps = [
         ],
         color: 'from-emerald-500 to-teal-500',
         bgColor: 'bg-emerald-500/10',
-        iconColor: 'text-emerald-500'
+        iconColor: 'text-emerald-500',
+        visual: 'scalability'
     },
     {
         slug: '24-7-einsatzbereit',
@@ -43,7 +49,8 @@ const valueProps = [
         ],
         color: 'from-blue-500 to-cyan-500',
         bgColor: 'bg-blue-500/10',
-        iconColor: 'text-blue-500'
+        iconColor: 'text-blue-500',
+        visual: '247'
     },
     {
         slug: 'geschwindigkeit',
@@ -58,37 +65,40 @@ const valueProps = [
         ],
         color: 'from-amber-500 to-orange-500',
         bgColor: 'bg-amber-500/10',
-        iconColor: 'text-amber-500'
+        iconColor: 'text-amber-500',
+        visual: 'speed'
     },
     {
         slug: 'sinkende-retouren',
         icon: ShieldCheck,
-        title: 'Sinkende Retourenquote',
+        title: 'KI-gestützte OEM-Ermittlung',
         headline: 'Das richtige Teil beim ersten Mal',
-        description: 'Automatische Angebotserstellung mit präziser Fahrzeugerkennung. Kein menschliches Versagen mehr.',
+        description: 'Multi-Source OEM-Abgleich über TecDoc, Autodoc, Daparto und eBay. Konfidenz-Prüfung an jeder Quelle.',
         highlights: [
-            'KI-gestützte OEM-Ermittlung',
+            'Automatische Kreuzvalidierung über 4+ Quellen',
             'Drastische Reduzierung der Retouren',
             'Weniger Reklamationen, mehr Marge'
         ],
         color: 'from-violet-500 to-purple-500',
         bgColor: 'bg-violet-500/10',
-        iconColor: 'text-violet-500'
+        iconColor: 'text-violet-500',
+        visual: 'oem'
     },
     {
-        slug: 'sprachuebergreifend',
+        slug: 'automatische-rechnungserstellung',
         icon: Globe,
-        title: 'Sprachübergreifend nutzbar',
-        headline: 'Versteht jeden Kunden',
-        description: 'Automatische Spracherkennung. Versteht Sprachnachrichten und Mechaniker-Slang.',
+        title: 'Automatische Rechnungserstellung',
+        headline: 'Vollständiger Prozess',
+        description: 'Von der Bestellung über die Rechnung bis zum Versand - vollautomatisch. Kein manueller Schritt nötig.',
         highlights: [
-            'Multilingual ohne Zusatzkosten',
-            '"Bremsklötze" = "Bremsbelagsatz"',
-            'Audio-Nachrichten werden transkribiert'
+            'Auto-generierte Rechnungen mit MwSt.',
+            'Zahlungslinks automatisch versendet',
+            'Lieferschein-Erstellung inklusive'
         ],
         color: 'from-pink-500 to-rose-500',
         bgColor: 'bg-pink-500/10',
-        iconColor: 'text-pink-500'
+        iconColor: 'text-pink-500',
+        visual: 'invoice'
     },
     {
         slug: 'team-entlastung',
@@ -103,9 +113,21 @@ const valueProps = [
         ],
         color: 'from-cyan-500 to-blue-500',
         bgColor: 'bg-cyan-500/10',
-        iconColor: 'text-cyan-500'
+        iconColor: 'text-cyan-500',
+        visual: null
     }
 ];
+
+function VisualComponent({ type }: { type: string | null }) {
+    switch (type) {
+        case 'scalability': return <ScalabilityVisual />;
+        case '247': return <TwentyFourSevenVisual />;
+        case 'speed': return <SpeedVisual />;
+        case 'oem': return <OEMVisual />;
+        case 'invoice': return <InvoiceVisual />;
+        default: return null;
+    }
+}
 
 export function ValueProposition() {
     return (
@@ -135,54 +157,95 @@ export function ValueProposition() {
                     </motion.div>
                 </div>
 
-                {/* Value Props Grid */}
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+                {/* Feature Rows - alternating layout */}
+                <div className="space-y-20 md:space-y-32">
                     {valueProps.map((prop, index) => (
                         <motion.div
                             key={prop.slug}
-                            initial={{ opacity: 0, y: 30 }}
+                            initial={{ opacity: 0, y: 40 }}
                             whileInView={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.5, delay: index * 0.1 }}
-                            viewport={{ once: true }}
+                            transition={{ duration: 0.6 }}
+                            viewport={{ once: true, margin: '-100px' }}
                         >
-                            <Link
-                                href={`/features/${prop.slug}`}
-                                className="group block h-full"
-                            >
-                                <div className="h-full p-6 lg:p-8 rounded-2xl glass card-hover border border-border/50 hover:border-primary/30">
-                                    {/* Icon */}
-                                    <div className={cn(
-                                        "h-14 w-14 rounded-xl flex items-center justify-center mb-6 transition-transform group-hover:scale-110",
-                                        prop.bgColor
-                                    )}>
-                                        <prop.icon className={cn("h-7 w-7", prop.iconColor)} />
+                            {prop.visual ? (
+                                /* Full-width feature with visual */
+                                <div className={`grid lg:grid-cols-2 gap-8 lg:gap-16 items-center ${index % 2 === 1 ? 'lg:grid-flow-dense' : ''}`}>
+                                    {/* Content Side */}
+                                    <div className={index % 2 === 1 ? 'lg:col-start-2' : ''}>
+                                        <div className={cn(
+                                            "h-14 w-14 rounded-xl flex items-center justify-center mb-6",
+                                            prop.bgColor
+                                        )}>
+                                            <prop.icon className={cn("h-7 w-7", prop.iconColor)} />
+                                        </div>
+                                        <h3 className="text-2xl md:text-3xl font-bold mb-3" style={{ fontFamily: 'var(--font-display)' }}>
+                                            {prop.title}
+                                        </h3>
+                                        <p className="text-muted-foreground mb-6 text-base md:text-lg leading-relaxed">
+                                            {prop.description}
+                                        </p>
+                                        <ul className="space-y-3 mb-8">
+                                            {prop.highlights.map((highlight, idx) => (
+                                                <li key={idx} className="flex items-start gap-3">
+                                                    <CheckCircle2 className="h-5 w-5 text-success mt-0.5 flex-shrink-0" />
+                                                    <span className="text-muted-foreground">{highlight}</span>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                        <Link
+                                            href={`/features/${prop.slug}`}
+                                            className="inline-flex items-center text-sm font-medium text-primary hover:underline group"
+                                        >
+                                            Mehr erfahren
+                                            <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                                        </Link>
                                     </div>
 
-                                    {/* Content */}
-                                    <h3 className="text-xl font-bold mb-2 group-hover:text-primary transition-colors">
-                                        {prop.title}
-                                    </h3>
-                                    <p className="text-muted-foreground mb-6 line-clamp-2">
-                                        {prop.description}
-                                    </p>
-
-                                    {/* Highlights */}
-                                    <ul className="space-y-2 mb-6">
-                                        {prop.highlights.slice(0, 2).map((highlight, idx) => (
-                                            <li key={idx} className="flex items-start gap-2 text-sm">
-                                                <CheckCircle2 className="h-4 w-4 text-success mt-0.5 flex-shrink-0" />
-                                                <span className="text-muted-foreground">{highlight}</span>
-                                            </li>
-                                        ))}
-                                    </ul>
-
-                                    {/* CTA */}
-                                    <div className="flex items-center text-sm font-medium text-primary">
-                                        <span>Mehr erfahren</span>
-                                        <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                                    {/* Visual Side */}
+                                    <div className={`relative ${index % 2 === 1 ? 'lg:col-start-1 lg:row-start-1' : ''}`}>
+                                        <div className="relative glass rounded-2xl border border-border/50 p-4 md:p-6 overflow-hidden">
+                                            {/* Glow */}
+                                            <div className={`absolute inset-0 bg-gradient-to-br ${prop.color} opacity-5 blur-xl`} />
+                                            <VisualComponent type={prop.visual} />
+                                        </div>
                                     </div>
                                 </div>
-                            </Link>
+                            ) : (
+                                /* Card-only (no visual) */
+                                <div className="max-w-2xl mx-auto">
+                                    <Link
+                                        href={`/features/${prop.slug}`}
+                                        className="group block"
+                                    >
+                                        <div className="p-8 rounded-2xl glass card-hover border border-border/50 hover:border-primary/30 text-center">
+                                            <div className={cn(
+                                                "h-14 w-14 rounded-xl flex items-center justify-center mb-6 mx-auto transition-transform group-hover:scale-110",
+                                                prop.bgColor
+                                            )}>
+                                                <prop.icon className={cn("h-7 w-7", prop.iconColor)} />
+                                            </div>
+                                            <h3 className="text-xl font-bold mb-3 group-hover:text-primary transition-colors">
+                                                {prop.title}
+                                            </h3>
+                                            <p className="text-muted-foreground mb-6">
+                                                {prop.description}
+                                            </p>
+                                            <ul className="space-y-2 mb-6 inline-block text-left">
+                                                {prop.highlights.map((highlight, idx) => (
+                                                    <li key={idx} className="flex items-start gap-2 text-sm">
+                                                        <CheckCircle2 className="h-4 w-4 text-success mt-0.5 flex-shrink-0" />
+                                                        <span className="text-muted-foreground">{highlight}</span>
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                            <div className="flex items-center justify-center text-sm font-medium text-primary">
+                                                <span>Mehr erfahren</span>
+                                                <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                                            </div>
+                                        </div>
+                                    </Link>
+                                </div>
+                            )}
                         </motion.div>
                     ))}
                 </div>
