@@ -25,16 +25,32 @@ export function ConsultationForm() {
     });
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isSubmitted, setIsSubmitted] = useState(false);
+    const [error, setError] = useState<string | null>(null);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsSubmitting(true);
+        setError(null);
 
-        // Simulate form submission
-        await new Promise(resolve => setTimeout(resolve, 1500));
+        try {
+            const response = await fetch('/api/leads', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formState),
+            });
 
-        setIsSubmitting(false);
-        setIsSubmitted(true);
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.error || 'Etwas ist schiefgelaufen.');
+            }
+
+            setIsSubmitted(true);
+        } catch (err: any) {
+            setError(err.message || 'Anfrage konnte nicht gesendet werden. Bitte versuchen Sie es erneut.');
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -134,6 +150,7 @@ export function ConsultationForm() {
                                             variant="outline"
                                             onClick={() => {
                                                 setIsSubmitted(false);
+                                                setError(null);
                                                 setFormState({
                                                     firma: '',
                                                     ansprechpartner: '',
@@ -236,6 +253,13 @@ export function ConsultationForm() {
                                                     className="flex w-full rounded-xl border border-border bg-background/50 px-4 py-3 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all resize-none"
                                                 />
                                             </div>
+
+                                            {/* Error Message */}
+                                            {error && (
+                                                <div className="p-4 rounded-xl bg-destructive/10 border border-destructive/20 text-destructive text-sm">
+                                                    {error}
+                                                </div>
+                                            )}
 
                                             {/* Submit Button */}
                                             <Button
