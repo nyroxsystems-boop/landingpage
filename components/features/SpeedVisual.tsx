@@ -1,33 +1,32 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Zap, Clock, FileText, ArrowRight } from 'lucide-react';
+import { Zap } from 'lucide-react';
 import { useState, useEffect } from 'react';
 
 export function SpeedVisual() {
     const [timer, setTimer] = useState(0);
     const [isRunning, setIsRunning] = useState(false);
 
-    // Auto-start animation when in view
     useEffect(() => {
         if (!isRunning) return;
         const interval = setInterval(() => {
             setTimer(prev => {
-                if (prev >= 2.8) {
+                if (prev >= 120) {
                     clearInterval(interval);
-                    return 2.8;
+                    return 120;
                 }
-                return prev + 0.1;
+                return prev + 2;
             });
-        }, 100);
+        }, 50);
         return () => clearInterval(interval);
     }, [isRunning]);
 
     const stages = [
-        { label: 'Anfrage', icon: '💬', done: timer > 0.3 },
-        { label: 'OEM-Suche', icon: '🔍', done: timer > 1.0 },
-        { label: '3 Angebote', icon: '📋', done: timer > 2.0 },
-        { label: 'Versendet', icon: '✅', done: timer > 2.5 },
+        { label: 'Anfrage', icon: '💬', done: timer > 5 },
+        { label: 'OEM-Suche', icon: '🔍', done: timer > 40 },
+        { label: '3 Angebote', icon: '📋', done: timer > 80 },
+        { label: 'Versendet', icon: '✅', done: timer > 110 },
     ];
 
     return (
@@ -45,21 +44,19 @@ export function SpeedVisual() {
                     <div className="inline-flex items-center gap-3 glass border border-amber-500/30 rounded-2xl px-5 py-3 md:px-6 md:py-4">
                         <Zap className="h-5 w-5 md:h-6 md:w-6 text-amber-400" />
                         <div className="font-mono text-2xl md:text-3xl font-bold text-white">
-                            {timer.toFixed(1)}<span className="text-base md:text-lg text-muted-foreground ml-1">Sek</span>
+                            {timer}<span className="text-base md:text-lg text-muted-foreground ml-1">Sek</span>
                         </div>
                     </div>
                 </motion.div>
 
                 {/* Progress Pipeline */}
                 <div className="relative">
-                    {/* Connection Line */}
                     <div className="absolute top-5 left-6 right-6 h-0.5 bg-slate-700/50 z-0" />
                     <motion.div
                         className="absolute top-5 left-6 h-0.5 bg-gradient-to-r from-amber-500 to-emerald-500 z-10"
-                        style={{ width: `${Math.min((timer / 2.8) * 100, 100)}%`, maxWidth: 'calc(100% - 48px)' }}
+                        style={{ width: `${Math.min((timer / 120) * 100, 100)}%`, maxWidth: 'calc(100% - 48px)' }}
                     />
 
-                    {/* Stage Nodes */}
                     <div className="relative flex justify-between z-20">
                         {stages.map((stage, i) => (
                             <motion.div
@@ -98,21 +95,21 @@ export function SpeedVisual() {
                     transition={{ delay: 1.5 }}
                 >
                     <div className="flex items-center justify-between text-[10px] md:text-xs mb-2">
-                        <span className="text-muted-foreground">Manuell</span>
-                        <span className="text-muted-foreground">~15 Min</span>
+                        <span className="text-muted-foreground">Manuelle OEM-Ermittlung</span>
+                        <span className="text-muted-foreground">~45 Min</span>
                     </div>
                     <div className="h-2 bg-slate-700/50 rounded-full mb-3 overflow-hidden">
                         <div className="h-full w-full bg-rose-500/40 rounded-full" />
                     </div>
                     <div className="flex items-center justify-between text-[10px] md:text-xs mb-2">
-                        <span className="text-amber-400 font-medium">Partsunion KI</span>
-                        <span className="text-amber-400 font-medium">~3 Sek</span>
+                        <span className="text-amber-400 font-medium">Partsunion KI-Bot</span>
+                        <span className="text-amber-400 font-medium">~120 Sek</span>
                     </div>
                     <div className="h-2 bg-slate-700/50 rounded-full overflow-hidden">
                         <motion.div
                             className="h-full bg-gradient-to-r from-amber-500 to-emerald-500 rounded-full"
                             initial={{ width: 0 }}
-                            whileInView={{ width: '3%' }}
+                            whileInView={{ width: '4.4%' }}
                             viewport={{ once: true }}
                             transition={{ delay: 1.8, duration: 0.5 }}
                         />

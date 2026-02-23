@@ -73,9 +73,9 @@ const valueProps = [
         icon: ShieldCheck,
         title: 'KI-gestützte OEM-Ermittlung',
         headline: 'Das richtige Teil beim ersten Mal',
-        description: 'Multi-Source OEM-Abgleich über TecDoc, Autodoc, Daparto und eBay. Konfidenz-Prüfung an jeder Quelle.',
+        description: 'Automatischer Multi-Source-Abgleich über mehrere Datenbanken. Konfidenz-Prüfung und Kreuzvalidierung für maximale Treffsicherheit.',
         highlights: [
-            'Automatische Kreuzvalidierung über 4+ Quellen',
+            'Automatische Kreuzvalidierung über mehrere Quellen',
             'Drastische Reduzierung der Retouren',
             'Weniger Reklamationen, mehr Marge'
         ],

@@ -1,13 +1,13 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Search, Database, CheckCircle2, ArrowRight, Cpu } from 'lucide-react';
+import { Search, CheckCircle2, Cpu, ShieldCheck } from 'lucide-react';
 
 const sources = [
-    { name: 'TecDoc', confidence: 98, color: 'from-blue-500 to-blue-600' },
-    { name: 'Autodoc', confidence: 95, color: 'from-emerald-500 to-emerald-600' },
-    { name: 'Daparto', confidence: 92, color: 'from-amber-500 to-amber-600' },
-    { name: 'eBay', confidence: 88, color: 'from-violet-500 to-violet-600' },
+    { label: 'Datenbank 1', confidence: 98, color: 'from-blue-500 to-blue-600' },
+    { label: 'Datenbank 2', confidence: 95, color: 'from-emerald-500 to-emerald-600' },
+    { label: 'Datenbank 3', confidence: 92, color: 'from-amber-500 to-amber-600' },
+    { label: 'Datenbank 4', confidence: 88, color: 'from-violet-500 to-violet-600' },
 ];
 
 export function OEMVisual() {
@@ -24,7 +24,7 @@ export function OEMVisual() {
                 >
                     <div className="flex items-center gap-2 mb-2">
                         <Search className="h-4 w-4 text-violet-400" />
-                        <span className="text-xs font-medium text-white">OEM-Suche</span>
+                        <span className="text-xs font-medium text-white">OEM-Ermittlung</span>
                     </div>
                     <div className="flex items-center gap-2">
                         <div className="flex-1 bg-slate-700/40 rounded-lg px-3 py-2 text-xs text-white font-mono">
@@ -52,11 +52,11 @@ export function OEMVisual() {
                             transition={{ delay: i * 0.2 + 0.5, duration: 0.4 }}
                         >
                             <div className={`h-8 w-8 rounded-lg bg-gradient-to-br ${source.color} flex items-center justify-center shrink-0`}>
-                                <Database className="h-3.5 w-3.5 text-white" />
+                                <ShieldCheck className="h-3.5 w-3.5 text-white" />
                             </div>
                             <div className="flex-1 min-w-0">
                                 <div className="flex items-center justify-between">
-                                    <span className="text-[10px] md:text-xs font-medium text-white">{source.name}</span>
+                                    <span className="text-[10px] md:text-xs font-medium text-white">{source.label}</span>
                                     <span className="text-[10px] md:text-xs text-emerald-400 font-mono">{source.confidence}%</span>
                                 </div>
                                 <div className="h-1.5 bg-slate-700/50 rounded-full mt-1 overflow-hidden">
@@ -91,7 +91,7 @@ export function OEMVisual() {
                 >
                     <div className="flex items-center justify-between">
                         <div>
-                            <div className="text-[10px] text-emerald-400 font-medium mb-1">✓ OEM verifiziert (4/4 Quellen)</div>
+                            <div className="text-[10px] text-emerald-400 font-medium mb-1">✓ OEM kreuzvalidiert</div>
                             <div className="text-sm md:text-base font-bold text-white font-mono">8K0615123F</div>
                         </div>
                         <div className="text-right">
