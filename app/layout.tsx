@@ -15,13 +15,34 @@ const outfit = Outfit({
 });
 
 export const metadata: Metadata = {
-  title: "Partsunion - Das Betriebssystem für den Teilehandel",
+  metadataBase: new URL("https://www.partsunion.de"),
+  title: {
+    default: "Partsunion - Das Betriebssystem für den Teilehandel",
+    template: "%s | Partsunion",
+  },
   description: "Die All-in-One Lösung für Autoteile-Händler. KI-Automatisierung, Warenwirtschaft und 24/7 WhatsApp Bot für mehr Umsatz.",
-  keywords: "Autoteile, Teilehandel, KI, WhatsApp Bot, Warenwirtschaft, OEM, Ersatzteile, Automatisierung",
+  keywords: "Autoteile, Teilehandel, KI, WhatsApp Bot, Warenwirtschaft, OEM, Ersatzteile, Automatisierung, Autoteilehändler, KI-Bot",
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
   openGraph: {
     title: "Partsunion - Das Betriebssystem für den Teilehandel",
-    description: "KI-gestützte Automatisierung für Autoteilehändler",
+    description: "KI-gestützte Automatisierung für Autoteilehändler. WhatsApp-Bot, OEM-Ermittlung und Warenwirtschaft.",
     type: "website",
+    locale: "de_DE",
+    url: "https://www.partsunion.de",
+    siteName: "Partsunion",
+  },
+  alternates: {
+    canonical: "https://www.partsunion.de",
   },
 };
 
