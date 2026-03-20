@@ -12,7 +12,7 @@ const messages = [
 
 export function MultiLanguageVisual() {
     return (
-        <div className="relative w-full h-[280px] md:h-[320px] flex items-center justify-center">
+        <div className="relative w-full flex items-center justify-center py-4">
             <div className="w-full max-w-sm space-y-2 md:space-y-3">
                 {/* Header */}
                 <motion.div

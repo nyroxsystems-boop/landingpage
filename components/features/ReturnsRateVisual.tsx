@@ -16,7 +16,7 @@ const checks = [
 
 export function ReturnsRateVisual() {
     return (
-        <div className="relative w-full h-[280px] md:h-[320px] flex items-center justify-center">
+        <div className="relative w-full flex items-center justify-center py-4">
             <div className="w-full max-w-sm space-y-3 md:space-y-4">
                 {/* Error Rate Comparison */}
                 <motion.div

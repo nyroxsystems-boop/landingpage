@@ -169,13 +169,13 @@ export default async function FeatureDetailPage({ params }: Props) {
 
                     {/* Right Column: Animated Visual */}
                     <div className="sticky top-32">
-                        <div className="relative aspect-square lg:aspect-[4/5] glass rounded-3xl overflow-hidden border border-border/50 shadow-2xl flex items-center justify-center">
+                        <div className="relative glass rounded-3xl overflow-hidden border border-border/50 shadow-2xl">
                             {/* Background Glow */}
                             <div className={`absolute -top-1/4 -right-1/4 w-full h-full blur-[120px] rounded-full ${isValueProp ? 'bg-accent/20' : 'bg-primary/20'
                                 }`} />
                             <div className="absolute -bottom-1/4 -left-1/4 w-full h-full bg-blue-500/10 blur-[120px] rounded-full" />
 
-                            <div className="relative z-10 w-full h-full p-6 md:p-8">
+                            <div className="relative z-10 w-full p-6 md:p-8 pt-14 md:pt-16 flex items-center justify-center min-h-[400px]">
                                 {previewMap[finalParams.slug] || (
                                     <div className="flex flex-col items-center justify-center h-full text-muted-foreground/30">
                                         <Icon size={120} className="mb-4" />

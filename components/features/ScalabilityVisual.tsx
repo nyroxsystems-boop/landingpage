@@ -13,7 +13,7 @@ const chatBubbles = [
 
 export function ScalabilityVisual() {
     return (
-        <div className="relative w-full h-[300px] md:h-[340px] flex flex-col items-center justify-center gap-4">
+        <div className="relative w-full flex flex-col items-center justify-center gap-4 py-4">
             {/* Central AI Bot */}
             <motion.div
                 className="relative z-20"

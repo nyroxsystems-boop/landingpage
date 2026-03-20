@@ -11,7 +11,7 @@ const timeSlots = [
 
 export function TwentyFourSevenVisual() {
     return (
-        <div className="relative w-full h-[280px] md:h-[320px] flex items-center justify-center">
+        <div className="relative w-full flex items-center justify-center py-4">
             {/* Glow */}
             <div className="absolute inset-0 bg-gradient-to-b from-blue-500/5 to-transparent rounded-2xl" />
 
