@@ -32,14 +32,28 @@ import { WhatsAppPreview } from '@/components/landing/WhatsAppPreview';
 import { AutomatedOrderPreview } from '@/components/features/AutomatedOrderPreview';
 import { SyncDashPreview } from '@/components/features/SyncDashPreview';
 import { ReturnsPreview } from '@/components/features/ReturnsPreview';
+import { ScalabilityVisual } from '@/components/features/ScalabilityVisual';
+import { TwentyFourSevenVisual } from '@/components/features/TwentyFourSevenVisual';
+import { SpeedVisual } from '@/components/features/SpeedVisual';
+import { ReturnsRateVisual } from '@/components/features/ReturnsRateVisual';
+import { MultiLanguageVisual } from '@/components/features/MultiLanguageVisual';
+import { TeamReliefVisual } from '@/components/features/TeamReliefVisual';
 
 const previewMap: Record<string, React.ReactNode> = {
+    // Core Features
     'automatische-rechnungserstellung': <InvoicePreview />,
     'oem-ermittlung': <OCRScannerPreview />,
     'whatsapp-bot': <WhatsAppPreview />,
     'bestellprozess': <AutomatedOrderPreview />,
     'bestandssynchronisation': <SyncDashPreview />,
     'retourenmanagement': <ReturnsPreview />,
+    // Value Propositions
+    'skalierbarkeit': <ScalabilityVisual />,
+    '24-7-einsatzbereit': <TwentyFourSevenVisual />,
+    'geschwindigkeit': <SpeedVisual />,
+    'sinkende-retouren': <ReturnsRateVisual />,
+    'sprachuebergreifend': <MultiLanguageVisual />,
+    'team-entlastung': <TeamReliefVisual />,
 };
 
 export default async function FeatureDetailPage({ params }: Props) {
