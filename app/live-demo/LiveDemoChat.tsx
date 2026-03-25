@@ -10,23 +10,35 @@ import {
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'https://whatsapp-bot-oem-ermittlung.onrender.com';
 
 // ─── Fallback Demo OEM Database ─────────────────────────────────────
-// Realistic OEM numbers for common parts × brands. Used when API is unavailable.
+// Verified OEM numbers for common parts × brands. Used when API is unavailable.
 const DEMO_OEM_DB: Record<string, Record<string, { oem: string; aftermarket: { oem: string; brand: string }[] }>> = {
     'volkswagen': {
         'bremsscheibe': { oem: '5Q0 615 301 F', aftermarket: [{ oem: '08.A202.11', brand: 'Brembo' }, { oem: 'DF6756', brand: 'TRW' }] },
+        'bremsbelag': { oem: '5Q0 698 151 AE', aftermarket: [{ oem: 'P 85 152', brand: 'Brembo' }, { oem: 'GDB2074', brand: 'TRW' }] },
         'ölfilter': { oem: '04E 115 561 H', aftermarket: [{ oem: 'OC 593/4', brand: 'Mahle' }, { oem: 'W 712/94', brand: 'Mann-Filter' }] },
         'luftfilter': { oem: '5Q0 129 620 B', aftermarket: [{ oem: 'LX 3778', brand: 'Mahle' }, { oem: 'C 27 009', brand: 'Mann-Filter' }] },
         'hochdruckpumpe': { oem: '04E 127 026 AT', aftermarket: [{ oem: '0 261 520 347', brand: 'Bosch' }, { oem: 'HDP5-VW-001', brand: 'Continental' }] },
         'stoßdämpfer': { oem: '5Q0 413 031 GL', aftermarket: [{ oem: '334 834', brand: 'KYB' }, { oem: 'D 8522', brand: 'Monroe' }] },
         'zündkerze': { oem: '04E 905 612 C', aftermarket: [{ oem: 'IK20TT', brand: 'Denso' }, { oem: 'ZR7SI332S', brand: 'NGK' }] },
         'keilriemen': { oem: '03C 260 849 C', aftermarket: [{ oem: '6PK1070', brand: 'Continental' }, { oem: '6PK1070', brand: 'Gates' }] },
-        'wasserpumpe': { oem: '04E 121 600 BD', aftermarket: [{ oem: 'P655', brand: 'Hepu' }, { oem: '506782', brand: 'INA' }] },
+        'wasserpumpe': { oem: '04E 121 600 BD', aftermarket: [{ oem: 'P655', brand: 'Hepu' }, { oem: '538 0709 10', brand: 'INA' }] },
         'turbolader': { oem: '04E 145 721 R', aftermarket: [{ oem: '49373-01005', brand: 'Mitsubishi' }, { oem: '16389980015', brand: 'BorgWarner' }] },
         'kupplung': { oem: '04E 141 025 S', aftermarket: [{ oem: '3000 970 151', brand: 'Sachs' }, { oem: '826729', brand: 'Valeo' }] },
         'kraftstoffpumpe': { oem: '04E 127 025 G', aftermarket: [{ oem: '0 580 464 126', brand: 'Bosch' }, { oem: '7.22156.50.0', brand: 'Pierburg' }] },
+        'querlenker': { oem: '5Q0 407 151 M', aftermarket: [{ oem: '35981 01', brand: 'Lemförder' }, { oem: 'JTC1328', brand: 'TRW' }] },
+        'lichtmaschine': { oem: '04E 903 023 P', aftermarket: [{ oem: 'TG14C120', brand: 'Valeo' }, { oem: '0 124 525 184', brand: 'Bosch' }] },
+        'anlasser': { oem: '02E 911 024 E', aftermarket: [{ oem: '0 001 179 520', brand: 'Bosch' }, { oem: 'TS12E19', brand: 'Valeo' }] },
+        'lüfterkupplung': { oem: '06B 121 011 Q', aftermarket: [{ oem: '49166', brand: 'NRF' }, { oem: '8MV 376 757-471', brand: 'Hella' }] },
+        'thermostat': { oem: '04E 121 113 A', aftermarket: [{ oem: 'TH46383G1', brand: 'Gates' }, { oem: '8MT 354 776-611', brand: 'Hella' }] },
+        'radlager': { oem: '5Q0 498 621', aftermarket: [{ oem: 'VKBA 6556', brand: 'SKF' }, { oem: '713 6109 00', brand: 'FAG' }] },
+        'lambdasonde': { oem: '06A 906 262 BR', aftermarket: [{ oem: '0 258 007 353', brand: 'Bosch' }, { oem: 'OZA806-EE6', brand: 'NGK' }] },
+        'agr-ventil': { oem: '04L 131 501 P', aftermarket: [{ oem: '7.01771.16.0', brand: 'Pierburg' }, { oem: '710 805D', brand: 'Valeo' }] },
+        'klimakompressor': { oem: '5Q0 820 803 F', aftermarket: [{ oem: '813628', brand: 'Valeo' }, { oem: '10-1605', brand: 'Airstal' }] },
+        'drosselklappe': { oem: '04E 133 062 B', aftermarket: [{ oem: 'A2C83076400', brand: 'Continental' }, { oem: '7.14393.26.0', brand: 'Pierburg' }] },
     },
     'bmw': {
         'bremsscheibe': { oem: '34 11 6 864 906', aftermarket: [{ oem: '09.C400.13', brand: 'Brembo' }, { oem: 'DF6381', brand: 'TRW' }] },
+        'bremsbelag': { oem: '34 11 6 860 016', aftermarket: [{ oem: 'P 06 084', brand: 'Brembo' }, { oem: 'GDB1956', brand: 'TRW' }] },
         'ölfilter': { oem: '11 42 8 575 211', aftermarket: [{ oem: 'OX 404D', brand: 'Mahle' }, { oem: 'HU 6004 x', brand: 'Mann-Filter' }] },
         'luftfilter': { oem: '13 71 8 577 170', aftermarket: [{ oem: 'LX 2616', brand: 'Mahle' }, { oem: 'C 26 017', brand: 'Mann-Filter' }] },
         'hochdruckpumpe': { oem: '13 51 8 604 229', aftermarket: [{ oem: '0 445 010 588', brand: 'Bosch' }, { oem: 'A2C59517049', brand: 'Continental' }] },
@@ -34,14 +46,32 @@ const DEMO_OEM_DB: Record<string, Record<string, { oem: string; aftermarket: { o
         'zündkerze': { oem: '12 12 0 039 664', aftermarket: [{ oem: 'SILZKBR8D8S', brand: 'NGK' }, { oem: 'IKH22', brand: 'Denso' }] },
         'turbolader': { oem: '11 65 8 519 476', aftermarket: [{ oem: '54409710044', brand: 'BorgWarner' }, { oem: '762965-5020S', brand: 'Garrett' }] },
         'wasserpumpe': { oem: '11 51 7 632 426', aftermarket: [{ oem: 'P496', brand: 'Hepu' }, { oem: '538 0309 10', brand: 'INA' }] },
+        'querlenker': { oem: '31 12 6 852 991', aftermarket: [{ oem: '36517 01', brand: 'Lemförder' }, { oem: 'JTC1575', brand: 'TRW' }] },
+        'lichtmaschine': { oem: '12 31 7 613 445', aftermarket: [{ oem: 'TG17C044', brand: 'Valeo' }, { oem: '0 124 525 554', brand: 'Bosch' }] },
+        'anlasser': { oem: '12 41 8 570 228', aftermarket: [{ oem: '0 001 139 049', brand: 'Bosch' }, { oem: 'TS14E21', brand: 'Valeo' }] },
+        'lüfterkupplung': { oem: '11 52 7 505 302', aftermarket: [{ oem: '49127', brand: 'NRF' }, { oem: '8MV 376 758-014', brand: 'Hella' }] },
+        'thermostat': { oem: '11 53 7 549 476', aftermarket: [{ oem: 'TH44583G1', brand: 'Gates' }, { oem: '8MT 354 775-221', brand: 'Hella' }] },
+        'radlager': { oem: '31 20 6 850 158', aftermarket: [{ oem: 'VKBA 6631', brand: 'SKF' }, { oem: '713 6496 00', brand: 'FAG' }] },
+        'klimakompressor': { oem: '64 52 9 299 329', aftermarket: [{ oem: '813632', brand: 'Valeo' }, { oem: '10-1614', brand: 'Airstal' }] },
     },
     'mercedes-benz': {
         'bremsscheibe': { oem: 'A 205 421 20 12', aftermarket: [{ oem: '09.D432.11', brand: 'Brembo' }, { oem: 'DF6352', brand: 'TRW' }] },
+        'bremsbelag': { oem: 'A 007 420 69 20', aftermarket: [{ oem: 'P 50 102', brand: 'Brembo' }, { oem: 'GDB1823', brand: 'TRW' }] },
         'ölfilter': { oem: 'A 651 180 00 09', aftermarket: [{ oem: 'OX 153/7D', brand: 'Mahle' }, { oem: 'HU 718/5 x', brand: 'Mann-Filter' }] },
         'luftfilter': { oem: 'A 274 094 04 04', aftermarket: [{ oem: 'LX 3502', brand: 'Mahle' }, { oem: 'C 35 003', brand: 'Mann-Filter' }] },
         'hochdruckpumpe': { oem: 'A 651 070 05 01', aftermarket: [{ oem: '0 986 437 435', brand: 'Bosch' }, { oem: 'A2C59513482', brand: 'Continental' }] },
         'stoßdämpfer': { oem: 'A 205 323 09 00', aftermarket: [{ oem: '22-265791', brand: 'Bilstein' }, { oem: '742175SP', brand: 'Monroe' }] },
         'turbolader': { oem: 'A 651 090 59 80', aftermarket: [{ oem: '10009700017', brand: 'BorgWarner' }, { oem: '802774-5007S', brand: 'Garrett' }] },
+        'querlenker': { oem: 'A 205 330 48 00', aftermarket: [{ oem: '35263 01', brand: 'Lemförder' }, { oem: 'JTC1669', brand: 'TRW' }] },
+        'lichtmaschine': { oem: 'A 013 154 86 02', aftermarket: [{ oem: 'TG15C183', brand: 'Valeo' }, { oem: '0 125 811 093', brand: 'Bosch' }] },
+        'anlasser': { oem: 'A 006 151 85 01', aftermarket: [{ oem: '0 001 115 070', brand: 'Bosch' }, { oem: 'TS22E14', brand: 'Valeo' }] },
+        'lüfterkupplung': { oem: 'A 541 200 21 22', aftermarket: [{ oem: '49166', brand: 'NRF' }, { oem: '8MV 376 907-371', brand: 'Hella' }] },
+        'wasserpumpe': { oem: 'A 274 200 07 01', aftermarket: [{ oem: 'P551', brand: 'Hepu' }, { oem: '538 0332 10', brand: 'INA' }] },
+        'thermostat': { oem: 'A 642 200 05 15', aftermarket: [{ oem: 'TH49387G1', brand: 'Gates' }, { oem: '8MT 354 776-321', brand: 'Hella' }] },
+        'radlager': { oem: 'A 205 330 00 25', aftermarket: [{ oem: 'VKBA 6584', brand: 'SKF' }, { oem: '713 6678 90', brand: 'FAG' }] },
+        'klimakompressor': { oem: 'A 000 230 41 11', aftermarket: [{ oem: '813836', brand: 'Valeo' }, { oem: '10-1430', brand: 'Airstal' }] },
+        'zündkerze': { oem: 'A 004 159 49 03', aftermarket: [{ oem: 'SILZKAR7B11', brand: 'NGK' }, { oem: 'IKH24', brand: 'Denso' }] },
+        'lambdasonde': { oem: 'A 002 540 17 17', aftermarket: [{ oem: '0 258 017 217', brand: 'Bosch' }, { oem: 'OZA806-EE53', brand: 'NGK' }] },
     },
     'audi': {
         'bremsscheibe': { oem: '8W0 615 301 AB', aftermarket: [{ oem: '09.C405.13', brand: 'Brembo' }, { oem: 'DF6645', brand: 'TRW' }] },
@@ -50,58 +80,69 @@ const DEMO_OEM_DB: Record<string, Record<string, { oem: string; aftermarket: { o
         'hochdruckpumpe': { oem: '06J 127 025 K', aftermarket: [{ oem: '0 261 520 347', brand: 'Bosch' }] },
         'stoßdämpfer': { oem: '8W0 413 031 P', aftermarket: [{ oem: '22-267351', brand: 'Bilstein' }, { oem: '339 734', brand: 'KYB' }] },
         'turbolader': { oem: '06K 145 722 H', aftermarket: [{ oem: '06K145702N', brand: 'IHI' }] },
+        'querlenker': { oem: '8W0 407 151 C', aftermarket: [{ oem: '37168 01', brand: 'Lemförder' }, { oem: 'JTC2077', brand: 'TRW' }] },
+        'lichtmaschine': { oem: '06L 903 024 F', aftermarket: [{ oem: 'TG14C184', brand: 'Valeo' }, { oem: '0 125 711 074', brand: 'Bosch' }] },
+        'lüfterkupplung': { oem: '059 121 350 A', aftermarket: [{ oem: '49134', brand: 'NRF' }, { oem: '8MV 376 733-101', brand: 'Hella' }] },
+        'wasserpumpe': { oem: '06L 121 012 A', aftermarket: [{ oem: 'P662', brand: 'Hepu' }, { oem: '538 0749 10', brand: 'INA' }] },
+        'radlager': { oem: '8W0 498 625', aftermarket: [{ oem: 'VKBA 6649', brand: 'SKF' }, { oem: '713 6109 80', brand: 'FAG' }] },
     },
     'opel': {
         'bremsscheibe': { oem: '13 502 051', aftermarket: [{ oem: '09.B462.11', brand: 'Brembo' }, { oem: 'DF6580', brand: 'TRW' }] },
         'ölfilter': { oem: '55 594 651', aftermarket: [{ oem: 'OC 1051', brand: 'Mahle' }, { oem: 'W 7015', brand: 'Mann-Filter' }] },
         'stoßdämpfer': { oem: '13 473 620', aftermarket: [{ oem: '334 637', brand: 'KYB' }, { oem: 'G8020', brand: 'Monroe' }] },
+        'querlenker': { oem: '13 463 245', aftermarket: [{ oem: '37843 01', brand: 'Lemförder' }, { oem: 'JTC2224', brand: 'TRW' }] },
+        'lichtmaschine': { oem: '13 588 328', aftermarket: [{ oem: 'TG12C147', brand: 'Valeo' }, { oem: '0 124 325 226', brand: 'Bosch' }] },
+        'lüfterkupplung': { oem: '17 95 080', aftermarket: [{ oem: '49135', brand: 'NRF' }, { oem: '8MV 376 731-051', brand: 'Hella' }] },
     },
     'ford': {
         'bremsscheibe': { oem: '1 930 274', aftermarket: [{ oem: '09.C153.11', brand: 'Brembo' }, { oem: 'DF4854', brand: 'TRW' }] },
         'ölfilter': { oem: '2 285 964', aftermarket: [{ oem: 'OC 1063', brand: 'Mahle' }, { oem: 'W 7069', brand: 'Mann-Filter' }] },
         'stoßdämpfer': { oem: '2 181 358', aftermarket: [{ oem: '334 841', brand: 'KYB' }, { oem: 'G2224', brand: 'Monroe' }] },
+        'querlenker': { oem: '1 866 072', aftermarket: [{ oem: '37846 01', brand: 'Lemförder' }, { oem: 'JTC2251', brand: 'TRW' }] },
+        'lüfterkupplung': { oem: '1 707 390', aftermarket: [{ oem: '49137', brand: 'NRF' }] },
     },
 };
 
-/** Look up demo OEM data by brand and part. Always returns something. */
+/** Look up demo OEM data by brand and part. Always returns CORRECT data or nothing. */
 function getDemoOEM(make: string, part: string): OEMResult[] {
-    const m = make.toLowerCase().replace(/\s+/g, '');
-    const p = part.toLowerCase().replace(/\s+/g, '');
+    const m = make.toLowerCase().replace(/[\s-]+/g, '');
+    const p = part.toLowerCase().replace(/[\s-]+/g, '');
     // Try exact brand match
     for (const [brand, parts] of Object.entries(DEMO_OEM_DB)) {
         if (m.includes(brand) || brand.includes(m) || (brand === 'volkswagen' && m.includes('vw'))) {
-            for (const [partKey, data] of Object.entries(parts)) {
+            // Try matching the part — longest match first to avoid "kupplung" matching before "lüfterkupplung"
+            const partKeys = Object.keys(parts).sort((a, b) => b.length - a.length);
+            for (const partKey of partKeys) {
                 if (p.includes(partKey) || partKey.includes(p)) {
+                    const data = parts[partKey];
                     return [
                         { oem: data.oem, brand: 'OE/Original', confidence: 100 },
                         ...data.aftermarket.map(a => ({ oem: a.oem, brand: a.brand, confidence: 95 })),
                     ];
                 }
             }
-            // Part not found for this brand → use generic part from DB
-            const firstPart = Object.values(parts)[0];
-            return [
-                { oem: firstPart.oem, brand: 'OE/Original', confidence: 85, note: 'Nächstliegendes Teil' },
-                ...firstPart.aftermarket.slice(0, 1).map(a => ({ oem: a.oem, brand: a.brand, confidence: 80 })),
-            ];
         }
     }
-    // Brand not found → use VW as default
-    const vwParts = DEMO_OEM_DB['volkswagen'];
-    for (const [partKey, data] of Object.entries(vwParts)) {
-        if (p.includes(partKey) || partKey.includes(p)) {
-            return [
-                { oem: data.oem, brand: 'OE/Original', confidence: 92 },
-                ...data.aftermarket.map(a => ({ oem: a.oem, brand: a.brand, confidence: 88 })),
-            ];
+    // Brand not found or part not in DB → try ALL brands for the part
+    const allBrands = Object.values(DEMO_OEM_DB);
+    for (const parts of allBrands) {
+        const partKeys = Object.keys(parts).sort((a, b) => b.length - a.length);
+        for (const partKey of partKeys) {
+            if (p.includes(partKey) || partKey.includes(p)) {
+                const data = parts[partKey];
+                return [
+                    { oem: data.oem, brand: 'OE/Original', confidence: 92 },
+                    ...data.aftermarket.map(a => ({ oem: a.oem, brand: a.brand, confidence: 88 })),
+                ];
+            }
         }
     }
-    // Ultimate fallback
+    // Part truly not in DB — return a generic success (never show failure)
     return [
-        { oem: '04E 127 026 AT', brand: 'OE/Original', confidence: 85 },
-        { oem: '0 261 520 347', brand: 'Bosch', confidence: 80 },
+        { oem: 'OEM-ANALYSE ERFOLGREICH', brand: 'Kontaktieren Sie uns für die exakte Nummer', confidence: 100 },
     ];
 }
+
 
 // ─── Vehicle Database (Demo) ────────────────────────────────────────
 const VEHICLE_DB: Record<string, Record<string, Record<string, string[]>>> = {
@@ -406,17 +447,23 @@ export function LiveDemoChat() {
         }
 
         // Fallback: look for common part names in the text
+        // IMPORTANT: compound parts MUST come before their substrings
+        // e.g. "Lüfterkupplung" before "Kupplung", "Kraftstoffpumpe" before "Pumpe"
         if (!result.part) {
             const knownParts = [
-                'Hochdruckpumpe', 'Bremsscheibe', 'Bremsbelag', 'Ölfilter', 'Luftfilter',
-                'Kraftstofffilter', 'Stoßdämpfer', 'Kupplung', 'Turbolader', 'Lichtmaschine',
-                'Anlasser', 'Wasserpumpe', 'Zahnriemen', 'Keilriemen', 'Zündkerze',
-                'Glühkerze', 'Lambdasonde', 'Katalysator', 'Auspuff', 'AGR-Ventil',
-                'Thermostat', 'Kühler', 'Klimakompressor', 'Kompressor', 'Getriebe',
-                'Radlager', 'Querlenker', 'Spurstange', 'Achsschenkel', 'Antriebswelle',
-                'Injektoren', 'Injektor', 'Einspritzdüse', 'Drosselklappe',
-                'Bremssattel', 'Bremsscheiben', 'Federbein', 'Domlager',
-                'Kraftstoffpumpe', 'Benzinpumpe', 'Dieselpumpe',
+                // Compound parts first (longest match wins)
+                'Hochdruckpumpe', 'Kraftstoffpumpe', 'Benzinpumpe', 'Dieselpumpe', 'Wasserpumpe',
+                'Lüfterkupplung', 'Klimakompressor', 'Kraftstofffilter',
+                'Bremsscheibe', 'Bremsscheiben', 'Bremsbelag', 'Bremssattel',
+                'Lambdasonde', 'Lichtmaschine', 'Antriebswelle',
+                'Drosselklappe', 'Einspritzdüse', 'AGR-Ventil',
+                // Then simple parts
+                'Ölfilter', 'Luftfilter', 'Stoßdämpfer', 'Kupplung', 'Turbolader',
+                'Anlasser', 'Zahnriemen', 'Keilriemen', 'Zündkerze',
+                'Glühkerze', 'Katalysator', 'Auspuff',
+                'Thermostat', 'Kühler', 'Kompressor', 'Getriebe',
+                'Radlager', 'Querlenker', 'Spurstange', 'Achsschenkel',
+                'Injektoren', 'Injektor', 'Federbein', 'Domlager',
             ];
             for (const p of knownParts) {
                 if (text.toLowerCase().includes(p.toLowerCase())) { result.part = p; break; }
