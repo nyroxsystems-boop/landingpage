@@ -447,7 +447,7 @@ export function LiveDemoChat() {
                 if (parsed.year) vehicle.year = parsed.year;
                 if (parsed.engine) vehicle.engine = parsed.engine;
 
-                setPartQuery(parsed.part);
+                setPartQuery(parsed.part!);
 
                 // Show parsed summary
                 let summary = `🔍 **Erkannt:**\n`;
@@ -462,15 +462,15 @@ export function LiveDemoChat() {
                 summary += `\n\n_Starte OEM-Ermittlung..._`;
                 await addBot(summary);
 
-                await runProcessing(parsed.part, vehicle);
+                await runProcessing(parsed.part!, vehicle);
                 return;
             }
 
             // If user provides part + partial info, save part and ask for VIN
             if (phase === 'part_input' && hasPart && !hasVehicleId && !hasVehicleInfo) {
-                setPartQuery(parsed.part);
+                setPartQuery(parsed.part!);
                 setPhase('vehicle_method');
-                await addBot(`🔧 Teil: **${parsed.part}**\n\n> ⚠️ Gleiches Teil, verschiedene OEMs je Fahrzeug — **VIN ist entscheidend!**\n\nWie möchten Sie Ihr Fahrzeug identifizieren?\n\n**1️⃣** Fahrzeugbrief-Foto hochladen\n**2️⃣** VIN/FIN eingeben (17-stellig)\n**3️⃣** HSN/TSN manuell eingeben`);
+                await addBot(`🔧 Teil: **${parsed.part!}**\n\n> ⚠️ Gleiches Teil, verschiedene OEMs je Fahrzeug — **VIN ist entscheidend!**\n\nWie möchten Sie Ihr Fahrzeug identifizieren?\n\n**1️⃣** Fahrzeugbrief-Foto hochladen\n**2️⃣** VIN/FIN eingeben (17-stellig)\n**3️⃣** HSN/TSN manuell eingeben`);
                 return;
             }
 
