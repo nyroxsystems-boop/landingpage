@@ -226,16 +226,156 @@ export function LiveDemoChat() {
         runProcessing(ddPart.trim(), vehicle);
     };
 
+    // ─── Smart Text Parsing (NLP-lite) ────────────────────────────────
+    const parseUserInput = useCallback((text: string) => {
+        const result: { vin?: string; hsn?: string; tsn?: string; make?: string; model?: string; year?: string; engine?: string; part?: string } = {};
+
+        // Extract VIN (17 alphanumeric, excluding I,O,Q)
+        const vinMatch = text.match(/\b([A-HJ-NPR-Z0-9]{17})\b/i);
+        if (vinMatch) result.vin = vinMatch[1].toUpperCase();
+
+        // Extract HSN/TSN
+        const hsnMatch = text.match(/(?:HSN|Herstellerschlüssel)[:\s]*(\d{4})/i);
+        const tsnMatch = text.match(/(?:TSN|Typschlüssel)[:\s]*([A-Za-z0-9]{3})/i);
+        if (hsnMatch) result.hsn = hsnMatch[1];
+        if (tsnMatch) result.tsn = tsnMatch[1].toUpperCase();
+
+        // Extract year (4 digits between 2000-2030)
+        const yearMatch = text.match(/(?:Baujahr|BJ|EZ|Erstzulassung|Jahr)[:\s]*(\d{4})/i) || text.match(/\b(20[0-2]\d)\b/);
+        if (yearMatch) result.year = yearMatch[1];
+
+        // Extract make/brand
+        const makePatterns: Record<string, RegExp> = {
+            'BMW': /\bBMW\b/i,
+            'Volkswagen': /\b(?:VW|Volkswagen)\b/i,
+            'Mercedes-Benz': /\b(?:Mercedes|Benz|MB)\b/i,
+            'Audi': /\bAudi\b/i,
+            'Opel': /\bOpel\b/i,
+            'Ford': /\bFord\b/i,
+            'Porsche': /\bPorsche\b/i,
+            'Skoda': /\bSkoda\b/i,
+            'Seat': /\bSeat\b/i,
+            'Toyota': /\bToyota\b/i,
+            'Hyundai': /\bHyundai\b/i,
+            'Kia': /\bKia\b/i,
+            'Renault': /\bRenault\b/i,
+            'Peugeot': /\bPeugeot\b/i,
+            'Fiat': /\bFiat\b/i,
+            'Volvo': /\bVolvo\b/i,
+        };
+        for (const [make, rx] of Object.entries(makePatterns)) {
+            if (rx.test(text)) { result.make = make; break; }
+        }
+
+        // Extract model
+        const modelPatterns = [
+            /(?:Golf|Passat|Tiguan|Polo|T-Roc|Touran|Caddy|Arteon|ID\.\d)\s*(?:[IVX]+|[A-Z0-9]*)/i,
+            /(?:3er|5er|1er|7er|X[1-7]|Z[1-4])\s*\([A-Z]\d+(?:\/[A-Z]\d+)*\)/i,
+            /[A-E]-Klasse\s*\([WCV]\d+\)/i, /(?:GLC|GLE|GLA|CLA|CLS|GLS|SL|AMG GT)\s*\([A-Z]\d+\)/i,
+            /A[1-8]\s*\([A-Z0-9]+\)/i, /Q[2-8]\s*\([A-Z0-9]+\)/i,
+            /(?:Astra|Corsa|Insignia|Mokka|Crossland|Grandland)\s*[A-Z]?/i,
+            /(?:Focus|Fiesta|Kuga|Mondeo|Puma|EcoSport)\s*(?:[IVX]+)?/i,
+        ];
+        for (const rx of modelPatterns) {
+            const m = text.match(rx);
+            if (m) { result.model = m[0].trim(); break; }
+        }
+
+        // Extract engine code (3-5 uppercase/digit chars in parentheses)
+        const engineMatch = text.match(/(?:Motorcode|Motor(?:kennbuchstabe)?)[:\s]*([A-Z0-9]{3,5})/i)
+            || text.match(/\(([A-Z]{2,4}\d?[A-Z]?),?\s*\d+\s*(?:PS|kW)/i);
+        if (engineMatch) result.engine = engineMatch[1].toUpperCase();
+
+        // Extract part name — look for known part keywords or "Gesuchtes Teil" pattern
+        const partPatterns = [
+            /(?:Gesuchtes?\s+Teil|Ersatzteil|Teil)[:\s]+(.+?)(?:\n|$|VIN|Motorcode|Fahrzeug|Baujahr)/i,
+            /(?:suche|brauche|benötige)\s+(?:ein(?:e|en)?\s+)?(.+?)(?:\s+für|\s+vom|\s+am|\n|$)/i,
+        ];
+        for (const rx of partPatterns) {
+            const m = text.match(rx);
+            if (m) { result.part = m[1].trim().replace(/\s*\(.*?\)\s*$/, '').trim(); break; }
+        }
+
+        // Fallback: look for common part names in the text
+        if (!result.part) {
+            const knownParts = [
+                'Hochdruckpumpe', 'Bremsscheibe', 'Bremsbelag', 'Ölfilter', 'Luftfilter',
+                'Kraftstofffilter', 'Stoßdämpfer', 'Kupplung', 'Turbolader', 'Lichtmaschine',
+                'Anlasser', 'Wasserpumpe', 'Zahnriemen', 'Keilriemen', 'Zündkerze',
+                'Glühkerze', 'Lambdasonde', 'Katalysator', 'Auspuff', 'AGR-Ventil',
+                'Thermostat', 'Kühler', 'Klimakompressor', 'Kompressor', 'Getriebe',
+                'Radlager', 'Querlenker', 'Spurstange', 'Achsschenkel', 'Antriebswelle',
+                'Injektoren', 'Injektor', 'Einspritzdüse', 'Drosselklappe',
+                'Bremssattel', 'Bremsscheiben', 'Federbein', 'Domlager',
+                'Kraftstoffpumpe', 'Benzinpumpe', 'Dieselpumpe',
+            ];
+            for (const p of knownParts) {
+                if (text.toLowerCase().includes(p.toLowerCase())) { result.part = p; break; }
+            }
+        }
+
+        return result;
+    }, []);
+
     // ─── Chat Logic ─────────────────────────────────────────────────
     const processMsg = useCallback(async (text: string, image?: string) => {
         setIsLoading(true);
         try {
+            // ── Always try smart parsing first (regardless of phase) ──
+            const parsed = parseUserInput(text);
+            const hasVehicleId = !!(parsed.vin || (parsed.hsn && parsed.tsn));
+            const hasVehicleInfo = !!(parsed.make && parsed.model);
+            const hasPart = !!parsed.part;
+
+            // If user provides enough info, skip the wizard entirely
+            if (phase === 'part_input' && hasPart && (hasVehicleId || hasVehicleInfo)) {
+                const vehicle: Record<string, string> = {};
+                if (parsed.vin) vehicle.vin = parsed.vin;
+                if (parsed.hsn) vehicle.hsn = parsed.hsn;
+                if (parsed.tsn) vehicle.tsn = parsed.tsn!;
+                if (parsed.make) vehicle.make = parsed.make;
+                if (parsed.model) vehicle.model = parsed.model;
+                if (parsed.year) vehicle.year = parsed.year;
+                if (parsed.engine) vehicle.engine = parsed.engine;
+
+                setPartQuery(parsed.part);
+
+                // Show parsed summary
+                let summary = `🔍 **Erkannt:**\n`;
+                if (parsed.part) summary += `\n🔧 Teil: **${parsed.part}**`;
+                if (parsed.make) summary += `\n🚗 Marke: **${parsed.make}**`;
+                if (parsed.model) summary += `\n📋 Modell: **${parsed.model}**`;
+                if (parsed.year) summary += `\n📅 Baujahr: **${parsed.year}**`;
+                if (parsed.engine) summary += `\n⚙️ Motor: **${parsed.engine}**`;
+                if (parsed.vin) summary += `\n🔢 VIN: \`${parsed.vin}\``;
+                if (parsed.hsn) summary += `\n📝 HSN: \`${parsed.hsn}\``;
+                if (parsed.tsn) summary += `\n📝 TSN: \`${parsed.tsn}\``;
+                summary += `\n\n_Starte OEM-Ermittlung..._`;
+                await addBot(summary);
+
+                await runProcessing(parsed.part, vehicle);
+                return;
+            }
+
+            // If user provides part + partial info, save part and ask for VIN
+            if (phase === 'part_input' && hasPart && !hasVehicleId && !hasVehicleInfo) {
+                setPartQuery(parsed.part);
+                setPhase('vehicle_method');
+                await addBot(`🔧 Teil: **${parsed.part}**\n\n> ⚠️ Gleiches Teil, verschiedene OEMs je Fahrzeug — **VIN ist entscheidend!**\n\nWie möchten Sie Ihr Fahrzeug identifizieren?\n\n**1️⃣** Fahrzeugbrief-Foto hochladen\n**2️⃣** VIN/FIN eingeben (17-stellig)\n**3️⃣** HSN/TSN manuell eingeben`);
+                return;
+            }
+
             switch (phase) {
                 case 'part_input': {
-                    if (text.length < 2) { await addBot('Bitte geben Sie den Teilenamen ein.'); break; }
-                    setPartQuery(text);
+                    // Check if it's just a VIN without a part
+                    if (parsed.vin && !hasPart) {
+                        await addBot(`✅ VIN erkannt: \`${parsed.vin}\`\n\nAber **welches Ersatzteil** suchen Sie?\nz.B. Bremsscheibe, Ölfilter, Hochdruckpumpe...`);
+                        break;
+                    }
+                    if (text.length < 2) { await addBot('Bitte geben Sie den Teilenamen ein, z.B. **Bremsscheibe**, **Ölfilter** oder **Hochdruckpumpe**.'); break; }
+                    setPartQuery(text.trim());
                     setPhase('vehicle_method');
-                    await addBot(`🔧 Teil: **${text}**\n\n> ⚠️ Gleiches Teil, verschiedene OEMs je Fahrzeug — **VIN ist entscheidend!**\n\n**1️⃣** Fahrzeugbrief-Foto\n**2️⃣** VIN/FIN eingeben\n**3️⃣** HSN/TSN manuell`);
+                    await addBot(`🔧 Teil: **${text.trim()}**\n\n> ⚠️ Gleiches Teil, verschiedene OEMs je Fahrzeug — **VIN ist entscheidend!**\n\nWie möchten Sie Ihr Fahrzeug identifizieren?\n\n**1️⃣** Fahrzeugbrief-Foto hochladen\n**2️⃣** VIN/FIN eingeben (17-stellig)\n**3️⃣** HSN/TSN manuell eingeben`);
                     break;
                 }
                 case 'vehicle_method': {
@@ -245,28 +385,47 @@ export function LiveDemoChat() {
                         await runProcessing(partQuery, { vin, make: 'BMW', model: '320d' });
                         return;
                     }
-                    const v = text.replace(/\s/g, '');
-                    if (/^[A-HJ-NPR-Z0-9]{17}$/i.test(v)) {
-                        await addBot(`✅ VIN: \`${v.toUpperCase()}\``);
-                        await runProcessing(partQuery, { vin: v.toUpperCase() });
+                    // Check for VIN in response
+                    if (parsed.vin) {
+                        await addBot(`✅ VIN: \`${parsed.vin}\``);
+                        const vehicle: Record<string, string> = { vin: parsed.vin };
+                        if (parsed.make) vehicle.make = parsed.make;
+                        if (parsed.model) vehicle.model = parsed.model;
+                        if (parsed.year) vehicle.year = parsed.year;
+                        if (parsed.engine) vehicle.engine = parsed.engine;
+                        await runProcessing(partQuery, vehicle);
                         return;
                     }
-                    if (text === '1' || /foto|bild|upload/i.test(text)) { await addBot('📷 Klicken Sie unten links auf 📎'); break; }
-                    if (text === '2' || /vin|fin/i.test(text)) { setPhase('vin_input'); await addBot('🔢 Bitte **17-stellige VIN/FIN** eingeben.'); break; }
-                    if (text === '3' || /hsn|tsn/i.test(text)) { setPhase('hsn_input'); await addBot('📝 **HSN und TSN** eingeben. Format: `0005 CJ2`'); break; }
-                    await addBot('Bitte wählen Sie **1**, **2** oder **3**.');
+                    // Check for HSN/TSN
+                    if (parsed.hsn && parsed.tsn) {
+                        await addBot(`✅ HSN/TSN: \`${parsed.hsn}/${parsed.tsn}\``);
+                        await runProcessing(partQuery, { hsn: parsed.hsn, tsn: parsed.tsn });
+                        return;
+                    }
+                    if (text === '1' || /foto|bild|upload/i.test(text)) { await addBot('📷 Klicken Sie unten links auf 📎 um ein Foto hochzuladen.'); break; }
+                    if (text === '2' || /vin|fin|fahr/i.test(text)) { setPhase('vin_input'); await addBot('🔢 Bitte die **17-stellige VIN/FIN** eingeben.\n\n_Sie finden diese im Fahrzeugbrief (Feld E) oder auf der Fahrertür._'); break; }
+                    if (text === '3' || /hsn|tsn/i.test(text)) { setPhase('hsn_input'); await addBot('📝 Bitte **HSN und TSN** eingeben.\n\nFormat: `0005 CJ2`\n\n_HSN = 4 Ziffern, TSN = 3 Zeichen. Finden Sie im Fahrzeugschein Feld 2.1 und 2.2._'); break; }
+                    await addBot('Bitte wählen Sie eine Option:\n\n**1** = Fahrzeugbrief-Foto\n**2** = VIN/FIN eingeben\n**3** = HSN/TSN manuell');
                     break;
                 }
                 case 'vin_input': {
-                    const vin = text.replace(/\s/g, '').toUpperCase();
-                    if (!/^[A-HJ-NPR-Z0-9]{17}$/.test(vin)) { await addBot('❌ VIN: genau **17 Zeichen**. Erneut versuchen.'); break; }
-                    await addBot(`✅ VIN: \`${vin}\``);
-                    await runProcessing(partQuery, { vin });
-                    return;
+                    if (parsed.vin) {
+                        await addBot(`✅ VIN: \`${parsed.vin}\``);
+                        await runProcessing(partQuery, { vin: parsed.vin });
+                        return;
+                    }
+                    const raw = text.replace(/[\s-]/g, '').toUpperCase();
+                    if (/^[A-HJ-NPR-Z0-9]{17}$/.test(raw)) {
+                        await addBot(`✅ VIN: \`${raw}\``);
+                        await runProcessing(partQuery, { vin: raw });
+                        return;
+                    }
+                    await addBot('❌ Ungültige VIN. Die VIN muss genau **17 Zeichen** lang sein (Buchstaben + Ziffern, ohne I, O, Q).\n\nBitte erneut versuchen.');
+                    break;
                 }
                 case 'hsn_input': {
                     const m = text.match(/(\d{4})\s*[\/\s,.-]*\s*([A-Za-z0-9]{3})/);
-                    if (!m) { await addBot('❌ Format: `0005 CJ2`'); break; }
+                    if (!m) { await addBot('❌ Ungültiges Format.\n\nBitte so eingeben: `0005 CJ2`\n\n_HSN = 4 Ziffern, TSN = 3 Zeichen_'); break; }
                     await addBot(`✅ HSN/TSN: \`${m[1]}/${m[2].toUpperCase()}\``);
                     await runProcessing(partQuery, { hsn: m[1], tsn: m[2].toUpperCase() });
                     return;
@@ -274,7 +433,7 @@ export function LiveDemoChat() {
                 case 'locked': { setShowCTA(true); break; }
             }
         } finally { setIsLoading(false); }
-    }, [phase, partQuery, addBot, runProcessing]);
+    }, [phase, partQuery, addBot, runProcessing, parseUserInput]);
 
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
