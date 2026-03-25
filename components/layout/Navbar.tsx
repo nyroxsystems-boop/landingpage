@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import { Button } from '@/components/ui/Button';
-import { Menu, X, ChevronDown, LogIn } from 'lucide-react';
+import { Menu, X, ChevronDown, LogIn, Sparkles } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { featureData, getValuePropositions, getCoreFeatures } from '@/lib/feature-data';
 
@@ -126,6 +126,10 @@ export function Navbar() {
                         <Link href="/contact" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">
                             Kontakt
                         </Link>
+                        <Link href="/live-demo" className="text-sm font-medium text-accent hover:text-accent/80 transition-colors flex items-center gap-1">
+                            <Sparkles className="h-3.5 w-3.5" />
+                            Live Demo
+                        </Link>
 
                         {/* Login Button */}
                         <a href="https://app.partsunion.de/auth" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors flex items-center gap-1">
@@ -187,6 +191,14 @@ export function Navbar() {
                             onClick={() => setIsMobileMenuOpen(false)}
                         >
                             Kontakt
+                        </Link>
+                        <Link
+                            href="/live-demo"
+                            className="text-sm font-medium text-accent hover:text-accent/80 flex items-center gap-2"
+                            onClick={() => setIsMobileMenuOpen(false)}
+                        >
+                            <Sparkles className="h-4 w-4" />
+                            Live Demo
                         </Link>
                         <a
                             href="https://app.partsunion.de/auth"

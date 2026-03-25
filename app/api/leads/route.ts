@@ -1,8 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-const CRM_API_URL =
-    process.env.CRM_API_URL ||
-    'https://whatsapp-bot-oem-ermittlung.onrender.com';
+const CRM_API_URL = process.env.CRM_API_URL;
+
+if (!CRM_API_URL) {
+    console.warn('[Lead API] CRM_API_URL not set — lead submissions will fail');
+}
 
 // ── Simple in-memory rate limiting (per IP) ──
 const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
@@ -95,6 +97,14 @@ export async function POST(request: NextRequest) {
         };
 
         // --- Forward to CRM backend ---
+        if (!CRM_API_URL) {
+            console.error('[Lead API] CRM_API_URL not configured');
+            return NextResponse.json(
+                { error: 'Kontaktformular ist derzeit nicht verfügbar.' },
+                { status: 503 }
+            );
+        }
+
         const response = await fetch(`${CRM_API_URL}/api/crm/leads`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
