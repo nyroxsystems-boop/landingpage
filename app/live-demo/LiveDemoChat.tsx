@@ -107,9 +107,10 @@ const DEMO_OEM_DB: Record<string, Record<string, { oem: string; aftermarket: { o
 function getDemoOEM(make: string, part: string): OEMResult[] {
     const m = make.toLowerCase().replace(/[\s-]+/g, '');
     const p = part.toLowerCase().replace(/[\s-]+/g, '');
-    // Try exact brand match
+    // Try exact brand match (normalize BOTH sides — strip dashes/spaces from DB keys too)
     for (const [brand, parts] of Object.entries(DEMO_OEM_DB)) {
-        if (m.includes(brand) || brand.includes(m) || (brand === 'volkswagen' && m.includes('vw'))) {
+        const brandNorm = brand.replace(/[\s-]+/g, '');
+        if (m.includes(brandNorm) || brandNorm.includes(m) || (brand === 'volkswagen' && m.includes('vw'))) {
             // Try matching the part — longest match first to avoid "kupplung" matching before "lüfterkupplung"
             const partKeys = Object.keys(parts).sort((a, b) => b.length - a.length);
             for (const partKey of partKeys) {
