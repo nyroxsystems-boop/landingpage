@@ -584,7 +584,7 @@ export function LiveDemoChat() {
     // Render
     // ═════════════════════════════════════════════════════════════════
     return (
-        <section className="min-h-screen pt-24 pb-8 px-4 relative overflow-hidden">
+        <section className="h-screen pt-24 pb-4 px-4 relative overflow-hidden">
             <div className="absolute inset-0 grid-pattern opacity-40" />
             <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[900px] h-[600px] gradient-glow opacity-30 blur-3xl pointer-events-none" />
 

@@ -11,5 +11,9 @@ export const metadata: Metadata = {
 };
 
 export default function LiveDemoPage() {
-    return <LiveDemoChat />;
+    return (
+        <div className="fixed inset-0 top-0 z-20 bg-[var(--background)]">
+            <LiveDemoChat />
+        </div>
+    );
 }
