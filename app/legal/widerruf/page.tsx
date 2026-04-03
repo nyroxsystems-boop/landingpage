@@ -1,35 +1,128 @@
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: 'Widerrufsrecht - Partsunion',
+    title: 'Widerrufsbelehrung - Partsunion',
+    description: 'Widerrufsbelehrung der Partsunion UG (haftungsbeschränkt)',
 };
 
 export default function WiderrufPage() {
     return (
-        <div className="container mx-auto px-4 py-20 max-w-3xl prose dark:prose-invert">
-            <h1>Widerrufsbelehrung</h1>
+        <div className="container mx-auto px-4 py-20 max-w-3xl">
+            <div className="prose dark:prose-invert max-w-none">
+                <h1>Widerrufsbelehrung</h1>
+                <p className="text-sm text-muted-foreground">Stand: April 2026</p>
 
-            <p>
-                Verbraucher haben ein vierzehntägiges Widerrufsrecht.
-            </p>
+                <h2>Widerrufsrecht</h2>
+                <p>
+                    Sie haben das Recht, binnen vierzehn Tagen ohne Angabe von Gründen diesen Vertrag
+                    zu widerrufen. Die Widerrufsfrist beträgt vierzehn Tage ab dem Tag des
+                    Vertragsabschlusses.
+                </p>
+                <p>
+                    Um Ihr Widerrufsrecht auszuüben, müssen Sie uns:
+                </p>
+                <p>
+                    <strong>Partsunion UG (haftungsbeschränkt)</strong><br />
+                    Musterstraße 42<br />
+                    10115 Berlin<br />
+                    Deutschland<br />
+                    E-Mail: widerruf@partsunion.de<br />
+                    Telefon: +49 (0) 30 123 456 78
+                </p>
+                <p>
+                    mittels einer eindeutigen Erklärung (z. B. ein mit der Post versandter Brief,
+                    Telefax oder E-Mail) über Ihren Entschluss, diesen Vertrag zu widerrufen,
+                    informieren. Sie können dafür das beigefügte Muster-Widerrufsformular verwenden,
+                    das jedoch nicht vorgeschrieben ist.
+                </p>
+                <p>
+                    Zur Wahrung der Widerrufsfrist reicht es aus, dass Sie die Mitteilung über die
+                    Ausübung des Widerrufsrechts vor Ablauf der Widerrufsfrist absenden.
+                </p>
 
-            <h2>Widerrufsrecht</h2>
-            <p>
-                Sie haben das Recht, binnen vierzehn Tagen ohne Angabe von Gründen diesen Vertrag zu widerrufen.
-                Die Widerrufsfrist beträgt vierzehn Tage ab dem Tag des Vertragsabschlusses.
-            </p>
-            <p>
-                Um Ihr Widerrufsrecht auszuüben, müssen Sie uns (Partsunion GmbH, Musterstraße 123, 10115 Berlin, E-Mail: widerruf@partsunion.de) mittels einer eindeutigen Erklärung (z. B. ein mit der Post versandter Brief oder eine E-Mail) über Ihren Entschluss, diesen Vertrag zu widerrufen, informieren.
-            </p>
+                <h2>Folgen des Widerrufs</h2>
+                <p>
+                    Wenn Sie diesen Vertrag widerrufen, haben wir Ihnen alle Zahlungen, die wir von
+                    Ihnen erhalten haben, einschließlich der Lieferkosten (mit Ausnahme der zusätzlichen
+                    Kosten, die sich daraus ergeben, dass Sie eine andere Art der Lieferung als die von
+                    uns angebotene, günstigste Standardlieferung gewählt haben), unverzüglich und
+                    spätestens binnen vierzehn Tagen ab dem Tag zurückzuzahlen, an dem die Mitteilung
+                    über Ihren Widerruf dieses Vertrags bei uns eingegangen ist. Für diese Rückzahlung
+                    verwenden wir dasselbe Zahlungsmittel, das Sie bei der ursprünglichen Transaktion
+                    eingesetzt haben, es sei denn, mit Ihnen wurde ausdrücklich etwas anderes vereinbart;
+                    in keinem Fall werden Ihnen wegen dieser Rückzahlung Entgelte berechnet.
+                </p>
+                <p>
+                    Haben Sie verlangt, dass die Dienstleistungen während der Widerrufsfrist beginnen
+                    sollen, so haben Sie uns einen angemessenen Betrag zu zahlen, der dem Anteil der
+                    bis zu dem Zeitpunkt, zu dem Sie uns von der Ausübung des Widerrufsrechts
+                    hinsichtlich dieses Vertrags unterrichten, bereits erbrachten Dienstleistungen im
+                    Vergleich zum Gesamtumfang der im Vertrag vorgesehenen Dienstleistungen entspricht.
+                </p>
 
-            <h2>Widerrufsfolgen</h2>
-            <p>
-                Wenn Sie diesen Vertrag widerrufen, haben wir Ihnen alle Zahlungen, die wir von Ihnen erhalten haben, unverzüglich und spätestens binnen vierzehn Tagen ab dem Tag zurückzuzahlen, an dem die Mitteilung über Ihren Widerruf dieses Vertrags bei uns eingegangen ist. Für diese Rückzahlung verwenden wir dasselbe Zahlungsmittel, das Sie bei der ursprünglichen Transaktion eingesetzt haben, es sei denn, mit Ihnen wurde ausdrücklich etwas anderes vereinbart.
-            </p>
+                <h2>Vorzeitiges Erlöschen des Widerrufsrechts</h2>
+                <p>
+                    Das Widerrufsrecht erlischt bei einem Vertrag über die Lieferung von nicht auf einem
+                    körperlichen Datenträger befindlichen digitalen Inhalten auch dann vorzeitig, wenn
+                    der Anbieter mit der Ausführung des Vertrags begonnen hat, nachdem der Kunde:
+                </p>
+                <ul>
+                    <li>
+                        ausdrücklich zugestimmt hat, dass der Anbieter mit der Ausführung des Vertrags
+                        vor Ablauf der Widerrufsfrist beginnt, und
+                    </li>
+                    <li>
+                        seine Kenntnis davon bestätigt hat, dass er durch seine Zustimmung mit Beginn
+                        der Ausführung des Vertrags sein Widerrufsrecht verliert.
+                    </li>
+                </ul>
 
-            <p>
-                Das Widerrufsrecht erlischt bei einem Vertrag über die Lieferung von nicht auf einem körperlichen Datenträger befindlichen digitalen Inhalten auch dann, wenn wir mit der Ausführung des Vertrags begonnen haben, nachdem Sie ausdrücklich zugestimmt haben, dass wir mit der Ausführung des Vertrags vor Ablauf der Widerrufsfrist beginnen, und Sie Ihre Kenntnis davon bestätigt haben, dass Sie durch Ihre Zustimmung mit Beginn der Ausführung des Vertrags Ihr Widerrufsrecht verlieren.
-            </p>
+                <h2>Ausschluss des Widerrufsrechts</h2>
+                <p>
+                    Das Widerrufsrecht besteht nicht bei Verträgen mit Unternehmern im Sinne von § 14 BGB.
+                    Das Widerrufsrecht gilt ausschließlich für Verbraucher im Sinne von § 13 BGB.
+                </p>
+
+                <h2>Muster-Widerrufsformular</h2>
+                <p>
+                    (Wenn Sie den Vertrag widerrufen wollen, dann füllen Sie bitte dieses Formular aus
+                    und senden Sie es zurück.)
+                </p>
+                <div className="p-6 rounded-xl bg-muted/50 border border-border/50 not-prose">
+                    <p className="text-sm text-muted-foreground mb-4">
+                        An:<br />
+                        Partsunion UG (haftungsbeschränkt)<br />
+                        Musterstraße 42<br />
+                        10115 Berlin<br />
+                        E-Mail: widerruf@partsunion.de
+                    </p>
+                    <p className="text-sm text-muted-foreground mb-4">
+                        Hiermit widerrufe(n) ich/wir (*) den von mir/uns (*) abgeschlossenen Vertrag
+                        über die Erbringung der folgenden Dienstleistung (*):
+                    </p>
+                    <p className="text-sm text-muted-foreground mb-4">
+                        _____________________________________________
+                    </p>
+                    <p className="text-sm text-muted-foreground mb-2">
+                        Bestellt am (*) / erhalten am (*): _______________
+                    </p>
+                    <p className="text-sm text-muted-foreground mb-2">
+                        Name des/der Verbraucher(s): _______________
+                    </p>
+                    <p className="text-sm text-muted-foreground mb-2">
+                        Anschrift des/der Verbraucher(s): _______________
+                    </p>
+                    <p className="text-sm text-muted-foreground mb-4">
+                        Unterschrift des/der Verbraucher(s) (nur bei Mitteilung auf Papier): _______________
+                    </p>
+                    <p className="text-sm text-muted-foreground">
+                        Datum: _______________
+                    </p>
+                    <p className="text-xs text-muted-foreground mt-4 italic">
+                        (*) Unzutreffendes streichen.
+                    </p>
+                </div>
+            </div>
         </div>
     );
 }

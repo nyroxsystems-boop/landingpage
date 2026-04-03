@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/Button';
-import { ArrowRight, Sparkles, Zap, Clock } from 'lucide-react';
+import { ArrowRight, Sparkles, Zap, Clock, Bot, ShieldCheck, TrendingUp } from 'lucide-react';
 import { DashboardPreview } from '@/components/landing/DashboardPreview';
 
 export function Hero() {
@@ -35,16 +35,16 @@ export function Hero() {
 
                         {/* Hero Headline */}
                         <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-6 leading-[1.1]" style={{ fontFamily: 'var(--font-display)' }}>
-                            Ihr Teilehandel auf{' '}
+                            Ihr Teilehandel.<br />
                             <span className="text-gradient">
-                                Autopilot
+                                Vollautomatisch.
                             </span>
                         </h1>
 
                         {/* Subheadline */}
                         <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto mb-8 leading-relaxed">
-                            Der erste KI-Mitarbeiter, der Fahrzeugscheine liest, OEM-Nummern in Sekunden findet und Angebote automatisch erstellt.
-                            <span className="text-foreground font-medium"> 24/7 verfügbar. Ohne Krankheit. Ohne Urlaub.</span>
+                            Der KI-Mitarbeiter, der Fahrzeugscheine liest, OEM-Nummern findet und Angebote erstellt —
+                            <span className="text-foreground font-medium"> in 8 Sekunden statt 15 Minuten.</span>
                         </p>
 
                         {/* Stats Row */}
@@ -52,14 +52,30 @@ export function Hero() {
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.6, delay: 0.2 }}
-                            className="flex flex-wrap justify-center gap-6 md:gap-10 mb-10"
+                            className="flex flex-wrap justify-center gap-4 md:gap-8 mb-10"
                         >
                             <div className="flex items-center gap-2 text-sm">
-                                <div className="h-8 w-8 rounded-lg bg-success/20 flex items-center justify-center">
-                                    <Zap className="h-4 w-4 text-success" />
+                                <div className="h-8 w-8 rounded-lg bg-emerald-500/20 flex items-center justify-center">
+                                    <Bot className="h-4 w-4 text-emerald-400" />
                                 </div>
                                 <span className="text-muted-foreground">
-                                    <strong className="text-foreground">3 Angebote</strong> pro Anfrage
+                                    <strong className="text-foreground">89%</strong> Automatisierung
+                                </span>
+                            </div>
+                            <div className="flex items-center gap-2 text-sm">
+                                <div className="h-8 w-8 rounded-lg bg-violet-500/20 flex items-center justify-center">
+                                    <ShieldCheck className="h-4 w-4 text-violet-400" />
+                                </div>
+                                <span className="text-muted-foreground">
+                                    <strong className="text-foreground">97,8%</strong> OEM-Trefferquote
+                                </span>
+                            </div>
+                            <div className="flex items-center gap-2 text-sm">
+                                <div className="h-8 w-8 rounded-lg bg-blue-500/20 flex items-center justify-center">
+                                    <TrendingUp className="h-4 w-4 text-blue-400" />
+                                </div>
+                                <span className="text-muted-foreground">
+                                    <strong className="text-foreground">3x</strong> mehr Kapazität
                                 </span>
                             </div>
                             <div className="flex items-center gap-2 text-sm">
@@ -67,7 +83,7 @@ export function Hero() {
                                     <Clock className="h-4 w-4 text-accent" />
                                 </div>
                                 <span className="text-muted-foreground">
-                                    In <strong className="text-foreground">Sekunden</strong> statt Minuten
+                                    <strong className="text-foreground">24/7</strong> verfügbar
                                 </span>
                             </div>
                         </motion.div>
@@ -83,7 +99,7 @@ export function Hero() {
                                 size="lg"
                                 className="w-full sm:w-auto h-14 text-lg px-8 gradient-primary shadow-lg shadow-primary/25 group"
                             >
-                                Beratungstermin buchen
+                                Kostenlos beraten lassen
                                 <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
                             </Button>
                             <Button
@@ -102,7 +118,7 @@ export function Hero() {
                             transition={{ duration: 0.6, delay: 0.5 }}
                             className="mt-8 text-sm text-muted-foreground"
                         >
-                            Preis auf Anfrage • Unverbindliche Beratung • Für Autoteilehändler
+                            Unverbindlich & kostenlos • Individuelles Angebot • Made in Germany
                         </motion.p>
                     </motion.div>
                 </div>

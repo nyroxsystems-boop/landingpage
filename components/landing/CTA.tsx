@@ -35,12 +35,12 @@ export function CTA() {
                     </div>
 
                     <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-6" style={{ fontFamily: 'var(--font-display)' }}>
-                        Starten Sie heute Ihre Transformation
+                        Weniger Stress.<br />Mehr Umsatz.
                     </h2>
 
                     <p className="text-white/80 text-lg md:text-xl max-w-2xl mx-auto mb-10">
-                        Werden Sie einer der führenden Autoteilehändler, die bereits mit Partsunion automatisieren
-                        und ihre Effizienz vervielfachen.
+                        Lassen Sie sich unverbindlich zeigen, wie Partsunion Ihren Teilehandel
+                        in 8 Sekunden statt 15 Minuten arbeiten lässt.
                     </p>
 
                     <div className="flex flex-col sm:flex-row items-center justify-center gap-4">

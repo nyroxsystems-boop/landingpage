@@ -24,7 +24,7 @@ export function Features() {
                         viewport={{ once: true }}
                     >
                         <span className="inline-block py-1.5 px-4 rounded-full glass text-sm font-medium text-primary mb-4">
-                            Core Features
+                            Kernfunktionen
                         </span>
                         <h2 className="text-3xl md:text-5xl font-bold mb-6" style={{ fontFamily: 'var(--font-display)' }}>
                             Alles was Sie <span className="text-gradient">brauchen</span>

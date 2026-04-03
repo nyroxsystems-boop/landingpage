@@ -20,6 +20,7 @@ const footerLinks = {
         { label: 'Impressum', href: '/legal/impressum' },
         { label: 'Datenschutz', href: '/legal/datenschutz' },
         { label: 'AGB', href: '/legal/agb' },
+        { label: 'Widerrufsrecht', href: '/legal/widerruf' },
     ]
 };
 

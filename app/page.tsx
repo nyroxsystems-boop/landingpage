@@ -1,7 +1,9 @@
 import { Hero } from '@/components/landing/Hero';
 import { PainPoints } from '@/components/landing/PainPoints';
+import { BeforeAfter } from '@/components/landing/BeforeAfter';
 import { ValueProposition } from '@/components/landing/ValueProposition';
 import { TechTabs } from '@/components/landing/TechTabs';
+import { SocialProof } from '@/components/landing/SocialProof';
 import { Features } from '@/components/landing/Features';
 import { ConsultationForm } from '@/components/landing/ConsultationForm';
 import { CTA } from '@/components/landing/CTA';
@@ -12,8 +14,10 @@ export default function Home() {
     <>
       <Hero />
       <PainPoints />
+      <BeforeAfter />
       <ValueProposition />
       <TechTabs />
+      <SocialProof />
       <Features />
       <ConsultationForm />
       <CTA />
