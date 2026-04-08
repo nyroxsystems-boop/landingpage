@@ -15,7 +15,7 @@ export default function AGBPage() {
                 <h2>§ 1 Geltungsbereich</h2>
                 <p>
                     (1) Die nachfolgenden Allgemeinen Geschäftsbedingungen (AGB) gelten für alle Verträge zwischen der
-                    Partsunion UG (haftungsbeschränkt), Musterstraße 42, 10115 Berlin (nachfolgend „Anbieter") und dem
+                    Partsunion UG (haftungsbeschränkt), Zum Sommersberg 27, 50321 Brühl (nachfolgend „Anbieter") und dem
                     Kunden (nachfolgend „Kunde") über die Nutzung der Software-as-a-Service-Lösung „Partsunion"
                     (nachfolgend „Software" oder „Dienst") in der zum Zeitpunkt des Vertragsschlusses gültigen Fassung.
                 </p>
@@ -83,7 +83,7 @@ export default function AGBPage() {
                 </p>
                 <p>
                     (2) Der Anbieter erbringt Support per E-Mail während der Geschäftszeiten
-                    (Montag bis Freitag, 9:00 – 18:00 Uhr, ausgenommen gesetzliche Feiertage in Berlin).
+                    (Montag bis Freitag, 9:00 – 18:00 Uhr, ausgenommen gesetzliche Feiertage in Nordrhein-Westfalen).
                 </p>
                 <p>
                     (3) Der Anbieter ist berechtigt, die technische Infrastruktur der Software zu ändern,
@@ -234,7 +234,7 @@ export default function AGBPage() {
                 <p>
                     (2) Ist der Kunde Kaufmann, juristische Person des öffentlichen Rechts oder
                     öffentlich-rechtliches Sondervermögen, ist Gerichtsstand für alle Streitigkeiten
-                    aus diesem Vertrag Berlin.
+                    aus diesem Vertrag Köln.
                 </p>
                 <p>
                     (3) Sollten einzelne Bestimmungen dieser AGB ganz oder teilweise unwirksam sein oder

@@ -7,7 +7,10 @@ import {
 } from 'lucide-react';
 
 // ─── Config ─────────────────────────────────────────────────────────
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'https://whatsapp-bot-oem-ermittlung.onrender.com';
+// Same backend the Admin Dashboard (admin.partsunion.de) queries — the
+// WhatsApp-Bot service on Railway hosts the shared production database
+// plus the Hydra v2 OEM engine. Override via NEXT_PUBLIC_API_URL at build time.
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'https://autoteile-bot-service-production.up.railway.app';
 
 // localStorage key: landing-page demo is limited to ONE successful query per device (not per session).
 // If this key is present (any value), the demo is permanently locked on this device.
@@ -216,10 +219,12 @@ export function LiveDemoChat() {
     }, []);
 
     // ─── Real API ───────────────────────────────────────────────────
-    // Calls the WhatsApp-Bot backend `/api/demo/oem-resolve`, which runs the full
-    // Hydra v2 pipeline against our production database (same DB the admin dashboard
-    // queries at admin.partsunion.de). No hardcoded fallback — if the API fails we
-    // show a real error instead of fabricated numbers.
+    // Calls `/api/demo/oem-resolve` on the shared Autoteile-bot-service backend.
+    // This is the exact same endpoint the Admin Dashboard calls from
+    // `Admin-Dashboard/src/api/wws.ts#resolveOemForward`, so the landing-page live
+    // demo hits the identical production database and Hydra v2 pipeline
+    // (DB → CrossRef → AI search → validation → self-learning).
+    // No fabricated fallback results — on API failure we surface the real error.
     const callOEM = useCallback(async (part: string, vehicle: Record<string, string>): Promise<OEMAPIResponse> => {
         try {
             const r = await fetch(`${API_BASE}/api/demo/oem-resolve`, {

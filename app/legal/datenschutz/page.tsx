@@ -91,12 +91,11 @@ export default function DatenschutzPage() {
                 <p>Die verantwortliche Stelle für die Datenverarbeitung auf dieser Website ist:</p>
                 <p>
                     Partsunion UG (haftungsbeschränkt)<br />
-                    Musterstraße 42<br />
-                    10115 Berlin<br />
+                    Zum Sommersberg 27<br />
+                    50321 Brühl<br />
                     Deutschland
                 </p>
                 <p>
-                    Telefon: +49 (0) 30 123 456 78<br />
                     E-Mail: datenschutz@partsunion.de
                 </p>
                 <p>

@@ -23,11 +23,10 @@ export default function WiderrufPage() {
                 </p>
                 <p>
                     <strong>Partsunion UG (haftungsbeschränkt)</strong><br />
-                    Musterstraße 42<br />
-                    10115 Berlin<br />
+                    Zum Sommersberg 27<br />
+                    50321 Brühl<br />
                     Deutschland<br />
-                    E-Mail: widerruf@partsunion.de<br />
-                    Telefon: +49 (0) 30 123 456 78
+                    E-Mail: widerruf@partsunion.de
                 </p>
                 <p>
                     mittels einer eindeutigen Erklärung (z. B. ein mit der Post versandter Brief,
@@ -92,8 +91,8 @@ export default function WiderrufPage() {
                     <p className="text-sm text-muted-foreground mb-4">
                         An:<br />
                         Partsunion UG (haftungsbeschränkt)<br />
-                        Musterstraße 42<br />
-                        10115 Berlin<br />
+                        Zum Sommersberg 27<br />
+                        50321 Brühl<br />
                         E-Mail: widerruf@partsunion.de
                     </p>
                     <p className="text-sm text-muted-foreground mb-4">

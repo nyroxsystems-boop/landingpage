@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import { Mail, Phone, MapPin } from 'lucide-react';
+import { Mail, MapPin } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { ContactForm } from './ContactForm';
 
@@ -41,22 +41,13 @@ export default function ContactPage() {
                             </div>
 
                             <div className="flex items-start gap-4">
-                                <Phone className="h-6 w-6 text-primary mt-1" />
-                                <div>
-                                    <h3 className="font-bold">Telefon</h3>
-                                    <p className="text-muted-foreground">+49 30 12345678</p>
-                                    <p className="text-xs text-muted-foreground">Mo-Fr 9:00 - 18:00 Uhr</p>
-                                </div>
-                            </div>
-
-                            <div className="flex items-start gap-4">
                                 <MapPin className="h-6 w-6 text-primary mt-1" />
                                 <div>
-                                    <h3 className="font-bold">Büro</h3>
+                                    <h3 className="font-bold">Sitz</h3>
                                     <p className="text-muted-foreground">
-                                        Partsunion GmbH<br />
-                                        Musterstraße 123<br />
-                                        10115 Berlin
+                                        Partsunion UG (haftungsbeschränkt)<br />
+                                        Zum Sommersberg 27<br />
+                                        50321 Brühl
                                     </p>
                                 </div>
                             </div>

@@ -15,41 +15,15 @@ export default function ImpressumPage() {
                 <h2>Anbieter</h2>
                 <p>
                     Partsunion UG (haftungsbeschränkt)<br />
-                    Musterstraße 42<br />
-                    10115 Berlin<br />
+                    Zum Sommersberg 27<br />
+                    50321 Brühl<br />
                     Deutschland
                 </p>
 
                 <h2>Kontakt</h2>
                 <p>
-                    Telefon: +49 (0) 30 123 456 78<br />
                     E-Mail: kontakt@partsunion.de<br />
                     Website: www.partsunion.de
-                </p>
-
-                <h2>Vertretungsberechtigter Geschäftsführer</h2>
-                <p>
-                    Max Mustermann
-                </p>
-
-                <h2>Registereintrag</h2>
-                <p>
-                    Eingetragen im Handelsregister.<br />
-                    Registergericht: Amtsgericht Berlin-Charlottenburg<br />
-                    Registernummer: HRB 123456 B
-                </p>
-
-                <h2>Umsatzsteuer-Identifikationsnummer</h2>
-                <p>
-                    Umsatzsteuer-Identifikationsnummer gemäß § 27a Umsatzsteuergesetz:<br />
-                    DE 123 456 789
-                </p>
-
-                <h2>Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV</h2>
-                <p>
-                    Max Mustermann<br />
-                    Musterstraße 42<br />
-                    10115 Berlin
                 </p>
 
                 <h2>EU-Streitschlichtung</h2>
