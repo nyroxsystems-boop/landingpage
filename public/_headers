@@ -1,0 +1,41 @@
+# Security + privacy headers applied by Netlify/Cloudflare/Railway-compatible
+# static hosts. Next.js static export does not emit headers itself, so this
+# file is copied into /out at build time and read by the hosting provider.
+# https://docs.netlify.com/routing/headers/
+
+/*
+  # Prevent the browser from guessing content types that could be used to
+  # sneak scripts past MIME checks.
+  X-Content-Type-Options: nosniff
+
+  # Click-jacking protection — only same origin can frame us.
+  X-Frame-Options: SAMEORIGIN
+
+  # Strict referrer policy: send the origin to same-origin navigations and
+  # nothing cross-origin. Prevents accidental URL leaks via Referer.
+  Referrer-Policy: strict-origin-when-cross-origin
+
+  # DSGVO-friendly permissions policy — disable all sensitive browser APIs
+  # the landing page does not need.
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), interest-cohort=(), payment=(), usb=(), serial=(), bluetooth=(), accelerometer=(), gyroscope=(), magnetometer=()
+
+  # Strict Content-Security-Policy. 'unsafe-inline' is required for the
+  # Schema.org JSON-LD block and Next.js's inline style bootstrap, plus the
+  # framer-motion runtime. Everything else is locked to self.
+  # connect-src allows the landing page to POST leads to the production
+  # and staging CRM / bot-service backends.
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https://api.partsunion.de https://autoteile-bot-service-production.up.railway.app; frame-ancestors 'self'; base-uri 'self'; form-action 'self'; object-src 'none'
+
+  # HSTS — tell browsers to always connect via HTTPS for the next 2 years.
+  # Only enable in production (most hosts add this automatically for HTTPS
+  # domains; keep it here as a safety net).
+  Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+
+# Long-cache Next.js static chunks — they are hashed so browsers can keep
+# them forever without risk of stale content.
+/_next/static/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Short-cache HTML pages so content updates propagate quickly.
+/*.html
+  Cache-Control: public, max-age=0, must-revalidate

@@ -4,6 +4,22 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Scan, Search, CheckCircle2, AlertCircle } from 'lucide-react';
 import { useState, useEffect } from 'react';
 
+// Stable deterministic hex strings so the component stays pure and server-
+// side rendering does not mismatch client-side hydration. The values look
+// random but are picked at build time and never change.
+const HEX_ROWS = [
+    'a4f1c2',
+    '7b3e91',
+    'd2c584',
+    '1e9f7a',
+    '6a2b4c',
+    'f08d15',
+    '3c7e22',
+    'b9145f',
+    '4d6a88',
+    '2ec931',
+];
+
 export function OCRScannerPreview() {
     const [step, setStep] = useState(0);
 
@@ -114,8 +130,8 @@ export function OCRScannerPreview() {
             {/* Background Data Stream */}
             <div className="absolute bottom-4 left-4 h-24 overflow-hidden opacity-30 text-[8px] text-blue-900 pointer-events-none">
                 <div className="animate-scroll-y">
-                    {Array.from({ length: 10 }).map((_, i) => (
-                        <p key={i}>HEX_{Math.random().toString(16).slice(2, 8)}: FETCHING_METADATA_FROM_TECDOC_API...</p>
+                    {HEX_ROWS.map((hex, i) => (
+                        <p key={i}>HEX_{hex}: FETCHING_METADATA_FROM_TECDOC_API...</p>
                     ))}
                 </div>
             </div>

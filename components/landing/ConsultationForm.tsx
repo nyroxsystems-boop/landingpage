@@ -23,6 +23,7 @@ export function ConsultationForm() {
         email: '',
         nachricht: ''
     });
+    const [consent, setConsent] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isSubmitted, setIsSubmitted] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -32,11 +33,20 @@ export function ConsultationForm() {
         setIsSubmitting(true);
         setError(null);
 
+        // DSGVO: explicit consent is required before any personal data leaves
+        // the form. The checkbox is also a required attribute on the input,
+        // but we double-check server-side as well.
+        if (!consent) {
+            setError('Bitte bestätigen Sie die Verarbeitung Ihrer Daten laut Datenschutzerklärung.');
+            setIsSubmitting(false);
+            return;
+        }
+
         try {
             const response = await fetch('/api/leads', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(formState),
+                body: JSON.stringify({ ...formState, consent: true }),
             });
 
             const data = await response.json();
@@ -46,8 +56,9 @@ export function ConsultationForm() {
             }
 
             setIsSubmitted(true);
-        } catch (err: any) {
-            setError(err.message || 'Anfrage konnte nicht gesendet werden. Bitte versuchen Sie es erneut.');
+        } catch (err: unknown) {
+            const message = err instanceof Error ? err.message : 'Anfrage konnte nicht gesendet werden. Bitte versuchen Sie es erneut.';
+            setError(message);
         } finally {
             setIsSubmitting(false);
         }
@@ -254,6 +265,26 @@ export function ConsultationForm() {
                                                 />
                                             </div>
 
+                                            {/* DSGVO consent checkbox — explicit opt-in per Art. 6 Abs. 1 lit. a */}
+                                            <label className="flex items-start gap-3 cursor-pointer select-none text-xs text-muted-foreground">
+                                                <input
+                                                    type="checkbox"
+                                                    required
+                                                    checked={consent}
+                                                    onChange={(e) => setConsent(e.target.checked)}
+                                                    className="mt-0.5 h-4 w-4 rounded border-border text-primary focus:ring-2 focus:ring-primary cursor-pointer"
+                                                />
+                                                <span>
+                                                    Ich willige ein, dass meine Angaben zur Kontaktaufnahme und für
+                                                    Rückfragen dauerhaft gespeichert werden. Die Daten werden nicht an
+                                                    Dritte weitergegeben. Details in der{' '}
+                                                    <a href="/legal/datenschutz" className="text-primary hover:underline">
+                                                        Datenschutzerklärung
+                                                    </a>
+                                                    . Sie können Ihre Einwilligung jederzeit per E-Mail widerrufen.
+                                                </span>
+                                            </label>
+
                                             {/* Error Message */}
                                             {error && (
                                                 <div className="p-4 rounded-xl bg-destructive/10 border border-destructive/20 text-destructive text-sm">
@@ -265,8 +296,8 @@ export function ConsultationForm() {
                                             <Button
                                                 type="submit"
                                                 size="lg"
-                                                className="w-full h-14 text-lg gradient-primary shadow-lg shadow-primary/25 group"
-                                                disabled={isSubmitting}
+                                                className="w-full h-14 text-lg gradient-primary shadow-lg shadow-primary/25 group disabled:opacity-50 disabled:cursor-not-allowed"
+                                                disabled={isSubmitting || !consent}
                                             >
                                                 {isSubmitting ? (
                                                     <>
@@ -281,14 +312,6 @@ export function ConsultationForm() {
                                                     </>
                                                 )}
                                             </Button>
-
-                                            <p className="text-xs text-center text-muted-foreground">
-                                                Mit dem Absenden erklären Sie sich mit unserer{' '}
-                                                <a href="/legal/datenschutz" className="text-primary hover:underline">
-                                                    Datenschutzerklärung
-                                                </a>{' '}
-                                                einverstanden.
-                                            </p>
                                         </form>
                                     </>
                                 )}

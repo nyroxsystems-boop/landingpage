@@ -6,6 +6,22 @@ if (!CRM_API_URL) {
     console.warn('[Lead API] CRM_API_URL not set — lead submissions will fail');
 }
 
+// ── Input sanitization ──
+// Strip any HTML tags, scripts, and control characters from user input so
+// nothing that lands in the CRM can be abused by a downstream consumer that
+// renders the data without escaping. Length-caps every field so a huge
+// payload can't be used for DoS or to pollute our CRM logs.
+function sanitizeString(input: unknown, maxLength = 2000): string {
+    if (typeof input !== 'string') return '';
+    return input
+        // Remove any HTML-like tags (including partial ones)
+        .replace(/<[^>]*>/g, '')
+        // Remove control characters (keep tab, newline, carriage return)
+        .replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/g, '')
+        .trim()
+        .slice(0, maxLength);
+}
+
 // ── Simple in-memory rate limiting (per IP) ──
 const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
 const RATE_LIMIT_WINDOW = 60 * 1000; // 1 minute
@@ -50,10 +66,33 @@ export async function POST(request: NextRequest) {
 
         const body = await request.json();
 
-        // --- Validate required fields ---
-        const { firma, ansprechpartner, telefon, email, nachricht } = body;
+        // ── Honeypot / Bot Detection ──
+        // Check honeypot BEFORE sanitization so we don't waste cycles on obvious bots
+        if (body.website || body.url || body.homepage) {
+            console.log('[Lead API] Honeypot triggered, blocking spam submission');
+            return NextResponse.json({ success: true, id: 'blocked' }, { status: 201 });
+        }
 
-        if (!firma || !ansprechpartner || !telefon || !email) {
+        // --- Sanitize and validate required fields ---
+        const firma = sanitizeString(body.firma, 200);
+        const ansprechpartner = sanitizeString(body.ansprechpartner, 200);
+        const telefon = sanitizeString(body.telefon, 50);
+        const email = sanitizeString(body.email, 200).toLowerCase();
+        const nachricht = sanitizeString(body.nachricht, 5000);
+        const source = sanitizeString(body.source, 50) || 'Website';
+        const consent = body.consent === true;
+
+        // DSGVO: reject any submission without explicit consent
+        if (!consent) {
+            return NextResponse.json(
+                { error: 'Einwilligung zur Datenverarbeitung fehlt.' },
+                { status: 400 }
+            );
+        }
+
+        // Require at minimum: a name, a company, and an email address.
+        // Phone is no longer strictly required (contact form has no phone field).
+        if (!firma || !ansprechpartner || !email) {
             return NextResponse.json(
                 { error: 'Bitte füllen Sie alle Pflichtfelder aus.' },
                 { status: 400 }
@@ -68,16 +107,8 @@ export async function POST(request: NextRequest) {
             );
         }
 
-        // ── Honeypot / Bot Detection ──
-        // If a hidden "website" field is filled, it's likely a bot
-        if (body.website || body.url || body.homepage) {
-            console.log('[Lead API] Honeypot triggered, blocking spam submission');
-            // Return success to not reveal detection
-            return NextResponse.json({ success: true, id: 'blocked' }, { status: 201 });
-        }
-
         // ── Basic content checks ──
-        const allText = `${firma} ${ansprechpartner} ${nachricht || ''}`.toLowerCase();
+        const allText = `${firma} ${ansprechpartner} ${nachricht}`.toLowerCase();
         const spamPatterns = [/\bviagra\b/, /\bcasino\b/, /\bcrypto\b/, /\bsex\b/, /\bpharmacy\b/, /http[s]?:\/\//i];
         if (spamPatterns.some(p => p.test(allText))) {
             console.log('[Lead API] Spam content detected, blocking');
@@ -88,12 +119,13 @@ export async function POST(request: NextRequest) {
         const leadPayload = {
             company: firma,
             contactPerson: ansprechpartner,
-            phone: telefon,
-            email: email,
-            notes: nachricht || '',
-            source: 'Website',
+            phone: telefon || '—',
+            email,
+            notes: nachricht,
+            source: source === 'contact-page' ? 'Website (Kontakt)' : 'Website',
             status: 'Neu',
             tags: ['Website-Lead'],
+            consentGivenAt: new Date().toISOString(),
         };
 
         // --- Forward to CRM backend ---

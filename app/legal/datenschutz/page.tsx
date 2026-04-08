@@ -239,10 +239,13 @@ export default function DatenschutzPage() {
 
                 <h2>5. Plugins und Tools</h2>
 
-                <h3>Google Fonts (lokales Hosting)</h3>
+                <h3>Schriftarten (lokales Hosting)</h3>
                 <p>
-                    Diese Seite nutzt zur einheitlichen Darstellung von Schriftarten so genannte Google Fonts, die
-                    lokal installiert sind. Eine Verbindung zu Servern von Google findet dabei nicht statt.
+                    Diese Seite nutzt zur einheitlichen Darstellung von Schriftarten die Schriften
+                    <em> DM Sans</em> und <em>Outfit</em>. Die Schriftdateien werden bereits beim Erstellen
+                    der Website heruntergeladen und ausschließlich von unserem eigenen Server ausgeliefert.
+                    Beim Besuch dieser Website wird keinerlei Verbindung zu Google-Servern aufgebaut,
+                    insbesondere werden auch keine IP-Adressen an Google übermittelt.
                 </p>
 
                 <h2>6. Eigene Dienste</h2>

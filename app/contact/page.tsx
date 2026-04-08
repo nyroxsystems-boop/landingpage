@@ -1,10 +1,12 @@
 import { Metadata } from 'next';
-import { Button } from '@/components/ui/Button';
 import { Mail, Phone, MapPin } from 'lucide-react';
+import { Button } from '@/components/ui/Button';
+import { ContactForm } from './ContactForm';
 
 export const metadata: Metadata = {
     title: 'Kontakt - Partsunion',
-    description: 'Sprechen Sie mit uns. Wir beraten Sie gerne zur Digitalisierung Ihres Teilehandels.',
+    description:
+        'Sprechen Sie mit uns. Wir beraten Sie gerne zur Digitalisierung Ihres Teilehandels.',
 };
 
 export default function ContactPage() {
@@ -24,31 +26,7 @@ export default function ContactPage() {
                     <div className="grid md:grid-cols-2 gap-12">
                         <div>
                             <h2 className="text-2xl font-bold mb-6">Schreiben Sie uns</h2>
-                            <form className="space-y-6">
-                                <div className="grid sm:grid-cols-2 gap-4 sm:gap-6">
-                                    <div className="space-y-2">
-                                        <label className="text-sm font-medium">Vorname</label>
-                                        <input className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2" placeholder="Max" />
-                                    </div>
-                                    <div className="space-y-2">
-                                        <label className="text-sm font-medium">Nachname</label>
-                                        <input className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2" placeholder="Mustermann" />
-                                    </div>
-                                </div>
-                                <div className="space-y-2">
-                                    <label className="text-sm font-medium">Email</label>
-                                    <input className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2" placeholder="max@firma.de" type="email" />
-                                </div>
-                                <div className="space-y-2">
-                                    <label className="text-sm font-medium">Unternehmen</label>
-                                    <input className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2" placeholder="Autoteile Meyer GmbH" />
-                                </div>
-                                <div className="space-y-2">
-                                    <label className="text-sm font-medium">Nachricht</label>
-                                    <textarea className="flex min-h-[120px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2" placeholder="Wie können wir Ihnen helfen?" />
-                                </div>
-                                <Button className="w-full">Nachricht senden</Button>
-                            </form>
+                            <ContactForm />
                         </div>
 
                         <div className="space-y-8">
@@ -57,7 +35,7 @@ export default function ContactPage() {
                             <div className="flex items-start gap-4">
                                 <Mail className="h-6 w-6 text-primary mt-1" />
                                 <div>
-                                    <h3 className="font-bold">Email</h3>
+                                    <h3 className="font-bold">E-Mail</h3>
                                     <p className="text-muted-foreground">anfrage@partsunion.de</p>
                                 </div>
                             </div>
@@ -86,9 +64,12 @@ export default function ContactPage() {
                             <div className="p-6 bg-primary/5 rounded-xl border border-primary/10">
                                 <h4 className="font-bold mb-2 text-primary">Support benötigt?</h4>
                                 <p className="text-sm text-muted-foreground mb-4">
-                                    Als Kunde finden Sie schnelle Hilfe in unserem Support-Center oder direkt im Dashboard.
+                                    Als Kunde finden Sie schnelle Hilfe in unserem Support-Center oder
+                                    direkt im Dashboard.
                                 </p>
-                                <Button variant="outline" size="sm">Zum Support-Center</Button>
+                                <Button variant="outline" size="sm">
+                                    Zum Support-Center
+                                </Button>
                             </div>
                         </div>
                     </div>
