@@ -9,140 +9,9 @@ import {
 // ─── Config ─────────────────────────────────────────────────────────
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'https://whatsapp-bot-oem-ermittlung.onrender.com';
 
-// ─── Fallback Demo OEM Database ─────────────────────────────────────
-// Verified OEM numbers for common parts × brands. Used when API is unavailable.
-const DEMO_OEM_DB: Record<string, Record<string, { oem: string; aftermarket: { oem: string; brand: string }[] }>> = {
-    'volkswagen': {
-        'bremsscheibe': { oem: '5Q0 615 301 F', aftermarket: [{ oem: '08.A202.11', brand: 'Brembo' }, { oem: 'DF6756', brand: 'TRW' }] },
-        'bremsbelag': { oem: '5Q0 698 151 AE', aftermarket: [{ oem: 'P 85 152', brand: 'Brembo' }, { oem: 'GDB2074', brand: 'TRW' }] },
-        'ölfilter': { oem: '04E 115 561 H', aftermarket: [{ oem: 'OC 593/4', brand: 'Mahle' }, { oem: 'W 712/94', brand: 'Mann-Filter' }] },
-        'luftfilter': { oem: '5Q0 129 620 B', aftermarket: [{ oem: 'LX 3778', brand: 'Mahle' }, { oem: 'C 27 009', brand: 'Mann-Filter' }] },
-        'hochdruckpumpe': { oem: '04E 127 026 AT', aftermarket: [{ oem: '0 261 520 347', brand: 'Bosch' }, { oem: 'HDP5-VW-001', brand: 'Continental' }] },
-        'stoßdämpfer': { oem: '5Q0 413 031 GL', aftermarket: [{ oem: '334 834', brand: 'KYB' }, { oem: 'D 8522', brand: 'Monroe' }] },
-        'zündkerze': { oem: '04E 905 612 C', aftermarket: [{ oem: 'IK20TT', brand: 'Denso' }, { oem: 'ZR7SI332S', brand: 'NGK' }] },
-        'keilriemen': { oem: '03C 260 849 C', aftermarket: [{ oem: '6PK1070', brand: 'Continental' }, { oem: '6PK1070', brand: 'Gates' }] },
-        'wasserpumpe': { oem: '04E 121 600 BD', aftermarket: [{ oem: 'P655', brand: 'Hepu' }, { oem: '538 0709 10', brand: 'INA' }] },
-        'turbolader': { oem: '04E 145 721 R', aftermarket: [{ oem: '49373-01005', brand: 'Mitsubishi' }, { oem: '16389980015', brand: 'BorgWarner' }] },
-        'kupplung': { oem: '04E 141 025 S', aftermarket: [{ oem: '3000 970 151', brand: 'Sachs' }, { oem: '826729', brand: 'Valeo' }] },
-        'kraftstoffpumpe': { oem: '04E 127 025 G', aftermarket: [{ oem: '0 580 464 126', brand: 'Bosch' }, { oem: '7.22156.50.0', brand: 'Pierburg' }] },
-        'querlenker': { oem: '5Q0 407 151 M', aftermarket: [{ oem: '35981 01', brand: 'Lemförder' }, { oem: 'JTC1328', brand: 'TRW' }] },
-        'lichtmaschine': { oem: '04E 903 023 P', aftermarket: [{ oem: 'TG14C120', brand: 'Valeo' }, { oem: '0 124 525 184', brand: 'Bosch' }] },
-        'anlasser': { oem: '02E 911 024 E', aftermarket: [{ oem: '0 001 179 520', brand: 'Bosch' }, { oem: 'TS12E19', brand: 'Valeo' }] },
-        'lüfterkupplung': { oem: '06B 121 011 Q', aftermarket: [{ oem: '49166', brand: 'NRF' }, { oem: '8MV 376 757-471', brand: 'Hella' }] },
-        'thermostat': { oem: '04E 121 113 A', aftermarket: [{ oem: 'TH46383G1', brand: 'Gates' }, { oem: '8MT 354 776-611', brand: 'Hella' }] },
-        'radlager': { oem: '5Q0 498 621', aftermarket: [{ oem: 'VKBA 6556', brand: 'SKF' }, { oem: '713 6109 00', brand: 'FAG' }] },
-        'lambdasonde': { oem: '06A 906 262 BR', aftermarket: [{ oem: '0 258 007 353', brand: 'Bosch' }, { oem: 'OZA806-EE6', brand: 'NGK' }] },
-        'agr-ventil': { oem: '04L 131 501 P', aftermarket: [{ oem: '7.01771.16.0', brand: 'Pierburg' }, { oem: '710 805D', brand: 'Valeo' }] },
-        'klimakompressor': { oem: '5Q0 820 803 F', aftermarket: [{ oem: '813628', brand: 'Valeo' }, { oem: '10-1605', brand: 'Airstal' }] },
-        'drosselklappe': { oem: '04E 133 062 B', aftermarket: [{ oem: 'A2C83076400', brand: 'Continental' }, { oem: '7.14393.26.0', brand: 'Pierburg' }] },
-    },
-    'bmw': {
-        'bremsscheibe': { oem: '34 11 6 864 906', aftermarket: [{ oem: '09.C400.13', brand: 'Brembo' }, { oem: 'DF6381', brand: 'TRW' }] },
-        'bremsbelag': { oem: '34 11 6 860 016', aftermarket: [{ oem: 'P 06 084', brand: 'Brembo' }, { oem: 'GDB1956', brand: 'TRW' }] },
-        'ölfilter': { oem: '11 42 8 575 211', aftermarket: [{ oem: 'OX 404D', brand: 'Mahle' }, { oem: 'HU 6004 x', brand: 'Mann-Filter' }] },
-        'luftfilter': { oem: '13 71 8 577 170', aftermarket: [{ oem: 'LX 2616', brand: 'Mahle' }, { oem: 'C 26 017', brand: 'Mann-Filter' }] },
-        'hochdruckpumpe': { oem: '13 51 8 604 229', aftermarket: [{ oem: '0 445 010 588', brand: 'Bosch' }, { oem: 'A2C59517049', brand: 'Continental' }] },
-        'stoßdämpfer': { oem: '31 31 6 873 797', aftermarket: [{ oem: '22-247018', brand: 'Bilstein' }, { oem: '339 732', brand: 'KYB' }] },
-        'zündkerze': { oem: '12 12 0 039 664', aftermarket: [{ oem: 'SILZKBR8D8S', brand: 'NGK' }, { oem: 'IKH22', brand: 'Denso' }] },
-        'turbolader': { oem: '11 65 8 519 476', aftermarket: [{ oem: '54409710044', brand: 'BorgWarner' }, { oem: '762965-5020S', brand: 'Garrett' }] },
-        'wasserpumpe': { oem: '11 51 7 632 426', aftermarket: [{ oem: 'P496', brand: 'Hepu' }, { oem: '538 0309 10', brand: 'INA' }] },
-        'querlenker': { oem: '31 12 6 852 991', aftermarket: [{ oem: '36517 01', brand: 'Lemförder' }, { oem: 'JTC1575', brand: 'TRW' }] },
-        'lichtmaschine': { oem: '12 31 7 613 445', aftermarket: [{ oem: 'TG17C044', brand: 'Valeo' }, { oem: '0 124 525 554', brand: 'Bosch' }] },
-        'anlasser': { oem: '12 41 8 570 228', aftermarket: [{ oem: '0 001 139 049', brand: 'Bosch' }, { oem: 'TS14E21', brand: 'Valeo' }] },
-        'lüfterkupplung': { oem: '11 52 7 505 302', aftermarket: [{ oem: '49127', brand: 'NRF' }, { oem: '8MV 376 758-014', brand: 'Hella' }] },
-        'thermostat': { oem: '11 53 7 549 476', aftermarket: [{ oem: 'TH44583G1', brand: 'Gates' }, { oem: '8MT 354 775-221', brand: 'Hella' }] },
-        'radlager': { oem: '31 20 6 850 158', aftermarket: [{ oem: 'VKBA 6631', brand: 'SKF' }, { oem: '713 6496 00', brand: 'FAG' }] },
-        'klimakompressor': { oem: '64 52 9 299 329', aftermarket: [{ oem: '813632', brand: 'Valeo' }, { oem: '10-1614', brand: 'Airstal' }] },
-    },
-    'mercedes-benz': {
-        'bremsscheibe': { oem: 'A 205 421 20 12', aftermarket: [{ oem: '09.D432.11', brand: 'Brembo' }, { oem: 'DF6352', brand: 'TRW' }] },
-        'bremsbelag': { oem: 'A 007 420 69 20', aftermarket: [{ oem: 'P 50 102', brand: 'Brembo' }, { oem: 'GDB1823', brand: 'TRW' }] },
-        'ölfilter': { oem: 'A 651 180 00 09', aftermarket: [{ oem: 'OX 153/7D', brand: 'Mahle' }, { oem: 'HU 718/5 x', brand: 'Mann-Filter' }] },
-        'luftfilter': { oem: 'A 274 094 04 04', aftermarket: [{ oem: 'LX 3502', brand: 'Mahle' }, { oem: 'C 35 003', brand: 'Mann-Filter' }] },
-        'hochdruckpumpe': { oem: 'A 651 070 05 01', aftermarket: [{ oem: '0 986 437 435', brand: 'Bosch' }, { oem: 'A2C59513482', brand: 'Continental' }] },
-        'stoßdämpfer': { oem: 'A 205 323 09 00', aftermarket: [{ oem: '22-265791', brand: 'Bilstein' }, { oem: '742175SP', brand: 'Monroe' }] },
-        'turbolader': { oem: 'A 651 090 59 80', aftermarket: [{ oem: '10009700017', brand: 'BorgWarner' }, { oem: '802774-5007S', brand: 'Garrett' }] },
-        'querlenker': { oem: 'A 205 330 48 00', aftermarket: [{ oem: '35263 01', brand: 'Lemförder' }, { oem: 'JTC1669', brand: 'TRW' }] },
-        'lichtmaschine': { oem: 'A 013 154 86 02', aftermarket: [{ oem: 'TG15C183', brand: 'Valeo' }, { oem: '0 125 811 093', brand: 'Bosch' }] },
-        'anlasser': { oem: 'A 006 151 85 01', aftermarket: [{ oem: '0 001 115 070', brand: 'Bosch' }, { oem: 'TS22E14', brand: 'Valeo' }] },
-        'lüfterkupplung': { oem: 'A 541 200 21 22', aftermarket: [{ oem: '49166', brand: 'NRF' }, { oem: '8MV 376 907-371', brand: 'Hella' }] },
-        'wasserpumpe': { oem: 'A 274 200 07 01', aftermarket: [{ oem: 'P551', brand: 'Hepu' }, { oem: '538 0332 10', brand: 'INA' }] },
-        'thermostat': { oem: 'A 642 200 05 15', aftermarket: [{ oem: 'TH49387G1', brand: 'Gates' }, { oem: '8MT 354 776-321', brand: 'Hella' }] },
-        'radlager': { oem: 'A 205 330 00 25', aftermarket: [{ oem: 'VKBA 6584', brand: 'SKF' }, { oem: '713 6678 90', brand: 'FAG' }] },
-        'klimakompressor': { oem: 'A 000 230 41 11', aftermarket: [{ oem: '813836', brand: 'Valeo' }, { oem: '10-1430', brand: 'Airstal' }] },
-        'zündkerze': { oem: 'A 004 159 49 03', aftermarket: [{ oem: 'SILZKAR7B11', brand: 'NGK' }, { oem: 'IKH24', brand: 'Denso' }] },
-        'lambdasonde': { oem: 'A 002 540 17 17', aftermarket: [{ oem: '0 258 017 217', brand: 'Bosch' }, { oem: 'OZA806-EE53', brand: 'NGK' }] },
-    },
-    'audi': {
-        'bremsscheibe': { oem: '8W0 615 301 AB', aftermarket: [{ oem: '09.C405.13', brand: 'Brembo' }, { oem: 'DF6645', brand: 'TRW' }] },
-        'ölfilter': { oem: '06L 115 562 B', aftermarket: [{ oem: 'OC 593/4', brand: 'Mahle' }, { oem: 'W 719/45', brand: 'Mann-Filter' }] },
-        'luftfilter': { oem: '8W0 133 843 E', aftermarket: [{ oem: 'LX 3771', brand: 'Mahle' }, { oem: 'C 30 005', brand: 'Mann-Filter' }] },
-        'hochdruckpumpe': { oem: '06J 127 025 K', aftermarket: [{ oem: '0 261 520 347', brand: 'Bosch' }] },
-        'stoßdämpfer': { oem: '8W0 413 031 P', aftermarket: [{ oem: '22-267351', brand: 'Bilstein' }, { oem: '339 734', brand: 'KYB' }] },
-        'turbolader': { oem: '06K 145 722 H', aftermarket: [{ oem: '06K145702N', brand: 'IHI' }] },
-        'querlenker': { oem: '8W0 407 151 C', aftermarket: [{ oem: '37168 01', brand: 'Lemförder' }, { oem: 'JTC2077', brand: 'TRW' }] },
-        'lichtmaschine': { oem: '06L 903 024 F', aftermarket: [{ oem: 'TG14C184', brand: 'Valeo' }, { oem: '0 125 711 074', brand: 'Bosch' }] },
-        'lüfterkupplung': { oem: '059 121 350 A', aftermarket: [{ oem: '49134', brand: 'NRF' }, { oem: '8MV 376 733-101', brand: 'Hella' }] },
-        'wasserpumpe': { oem: '06L 121 012 A', aftermarket: [{ oem: 'P662', brand: 'Hepu' }, { oem: '538 0749 10', brand: 'INA' }] },
-        'radlager': { oem: '8W0 498 625', aftermarket: [{ oem: 'VKBA 6649', brand: 'SKF' }, { oem: '713 6109 80', brand: 'FAG' }] },
-    },
-    'opel': {
-        'bremsscheibe': { oem: '13 502 051', aftermarket: [{ oem: '09.B462.11', brand: 'Brembo' }, { oem: 'DF6580', brand: 'TRW' }] },
-        'ölfilter': { oem: '55 594 651', aftermarket: [{ oem: 'OC 1051', brand: 'Mahle' }, { oem: 'W 7015', brand: 'Mann-Filter' }] },
-        'stoßdämpfer': { oem: '13 473 620', aftermarket: [{ oem: '334 637', brand: 'KYB' }, { oem: 'G8020', brand: 'Monroe' }] },
-        'querlenker': { oem: '13 463 245', aftermarket: [{ oem: '37843 01', brand: 'Lemförder' }, { oem: 'JTC2224', brand: 'TRW' }] },
-        'lichtmaschine': { oem: '13 588 328', aftermarket: [{ oem: 'TG12C147', brand: 'Valeo' }, { oem: '0 124 325 226', brand: 'Bosch' }] },
-        'lüfterkupplung': { oem: '17 95 080', aftermarket: [{ oem: '49135', brand: 'NRF' }, { oem: '8MV 376 731-051', brand: 'Hella' }] },
-    },
-    'ford': {
-        'bremsscheibe': { oem: '1 930 274', aftermarket: [{ oem: '09.C153.11', brand: 'Brembo' }, { oem: 'DF4854', brand: 'TRW' }] },
-        'ölfilter': { oem: '2 285 964', aftermarket: [{ oem: 'OC 1063', brand: 'Mahle' }, { oem: 'W 7069', brand: 'Mann-Filter' }] },
-        'stoßdämpfer': { oem: '2 181 358', aftermarket: [{ oem: '334 841', brand: 'KYB' }, { oem: 'G2224', brand: 'Monroe' }] },
-        'querlenker': { oem: '1 866 072', aftermarket: [{ oem: '37846 01', brand: 'Lemförder' }, { oem: 'JTC2251', brand: 'TRW' }] },
-        'lüfterkupplung': { oem: '1 707 390', aftermarket: [{ oem: '49137', brand: 'NRF' }] },
-    },
-};
-
-/** Look up demo OEM data by brand and part. Always returns CORRECT data or nothing. */
-function getDemoOEM(make: string, part: string): OEMResult[] {
-    const m = make.toLowerCase().replace(/[\s-]+/g, '');
-    const p = part.toLowerCase().replace(/[\s-]+/g, '');
-    // Try exact brand match (normalize BOTH sides — strip dashes/spaces from DB keys too)
-    for (const [brand, parts] of Object.entries(DEMO_OEM_DB)) {
-        const brandNorm = brand.replace(/[\s-]+/g, '');
-        if (m.includes(brandNorm) || brandNorm.includes(m) || (brand === 'volkswagen' && m.includes('vw'))) {
-            // Try matching the part — longest match first to avoid "kupplung" matching before "lüfterkupplung"
-            const partKeys = Object.keys(parts).sort((a, b) => b.length - a.length);
-            for (const partKey of partKeys) {
-                if (p.includes(partKey) || partKey.includes(p)) {
-                    const data = parts[partKey];
-                    return [
-                        { oem: data.oem, brand: 'OE/Original', confidence: 100 },
-                        ...data.aftermarket.map(a => ({ oem: a.oem, brand: a.brand, confidence: 95 })),
-                    ];
-                }
-            }
-        }
-    }
-    // Brand not found or part not in DB → try ALL brands for the part
-    const allBrands = Object.values(DEMO_OEM_DB);
-    for (const parts of allBrands) {
-        const partKeys = Object.keys(parts).sort((a, b) => b.length - a.length);
-        for (const partKey of partKeys) {
-            if (p.includes(partKey) || partKey.includes(p)) {
-                const data = parts[partKey];
-                return [
-                    { oem: data.oem, brand: 'OE/Original', confidence: 92 },
-                    ...data.aftermarket.map(a => ({ oem: a.oem, brand: a.brand, confidence: 88 })),
-                ];
-            }
-        }
-    }
-    // Part truly not in DB — return a generic success (never show failure)
-    return [
-        { oem: 'OEM-ANALYSE ERFOLGREICH', brand: 'Kontaktieren Sie uns für die exakte Nummer', confidence: 100 },
-    ];
-}
+// localStorage key: landing-page demo is limited to ONE successful query per device (not per session).
+// If this key is present (any value), the demo is permanently locked on this device.
+const DEMO_LOCK_KEY = 'partsunion_demo_used_v1';
 
 
 // ─── Vehicle Database (Demo) ────────────────────────────────────────
@@ -202,6 +71,24 @@ interface OEMResult {
     brand?: string;
     confidence?: number;
     note?: string;
+}
+
+interface APICandidate {
+    oemNumber?: string;
+    oem?: string;
+    number?: string;
+    brand?: string;
+    confidence?: number;
+    note?: string;
+}
+
+interface OEMAPIResponse {
+    success: boolean;
+    oem?: string | null;
+    candidates?: APICandidate[];
+    notes?: string | null;
+    confidence?: number;
+    error?: string;
 }
 
 type Phase = 'part_input' | 'vehicle_method' | 'vin_input' | 'hsn_input' | 'dropdown_select' | 'processing' | 'results' | 'locked';
@@ -265,6 +152,7 @@ export function LiveDemoChat() {
     const [showParticles, setShowParticles] = useState(false);
     const [demoUsed, setDemoUsed] = useState(false);
     const [oemResults, setOemResults] = useState<OEMResult[]>([]);
+    const [apiError, setApiError] = useState<string | null>(null);
 
     const chatEnd = useRef<HTMLDivElement>(null);
     const fileRef = useRef<HTMLInputElement>(null);
@@ -274,9 +162,40 @@ export function LiveDemoChat() {
 
     // Greeting
     useEffect(() => {
+        // Check per-device lock: ONE successful OEM query per device.
+        // If already used previously, load the stored result and go straight to locked state.
+        let previouslyLocked = false;
+        let storedResults: OEMResult[] = [];
+        let storedPart = '';
+        try {
+            const stored = localStorage.getItem(DEMO_LOCK_KEY);
+            if (stored) {
+                previouslyLocked = true;
+                try {
+                    const parsed = JSON.parse(stored);
+                    if (Array.isArray(parsed.results)) storedResults = parsed.results;
+                    if (typeof parsed.part === 'string') storedPart = parsed.part;
+                } catch { /* legacy string value → just lock, no results to show */ }
+            }
+        } catch { /* localStorage not available (SSR / private mode) → no-op */ }
+
+        if (previouslyLocked) {
+            setDemoUsed(true);
+            setPhase('locked');
+            setOemResults(storedResults);
+            if (storedPart) setPartQuery(storedPart);
+            setMessages([{
+                id: uid(), role: 'bot', timestamp: new Date(),
+                text: '🔒 **Demo bereits abgeschlossen**\n\nSie haben die kostenlose Demo auf diesem Gerät bereits genutzt.\n\nFür unbegrenzte OEM-Ermittlung vereinbaren Sie bitte ein Beratungsgespräch.',
+            }]);
+            // Show the CTA again so the user gets the next-step prompt.
+            setTimeout(() => setShowCTA(true), 800);
+            return;
+        }
+
         setMessages([{
             id: uid(), role: 'bot', timestamp: new Date(),
-            text: '👋 **Willkommen zur Partsunion KI-Demo!**\n\nIch finde das richtige Ersatzteil für Ihr Fahrzeug.\n\n**Welches Teil suchen Sie?**',
+            text: '👋 **Willkommen zur Partsunion KI-Demo!**\n\nIch finde das richtige Ersatzteil für Ihr Fahrzeug.\n\n_Hinweis: Sie haben eine kostenlose Abfrage pro Gerät._\n\n**Welches Teil suchen Sie?**',
         }]);
     }, []);
 
@@ -297,77 +216,105 @@ export function LiveDemoChat() {
     }, []);
 
     // ─── Real API ───────────────────────────────────────────────────
-    const callOEM = useCallback(async (part: string, vehicle: Record<string, string>) => {
+    // Calls the WhatsApp-Bot backend `/api/demo/oem-resolve`, which runs the full
+    // Hydra v2 pipeline against our production database (same DB the admin dashboard
+    // queries at admin.partsunion.de). No hardcoded fallback — if the API fails we
+    // show a real error instead of fabricated numbers.
+    const callOEM = useCallback(async (part: string, vehicle: Record<string, string>): Promise<OEMAPIResponse> => {
         try {
             const r = await fetch(`${API_BASE}/api/demo/oem-resolve`, {
                 method: 'POST', headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ part, vehicle }),
             });
-            if (!r.ok) return { success: false, notes: 'API-Fehler' };
-            return await r.json();
-        } catch { return { success: false, notes: 'Verbindung fehlgeschlagen' }; }
+            if (!r.ok) {
+                const body = await r.json().catch(() => ({})) as { error?: string };
+                return { success: false, notes: body?.error || `API-Fehler (${r.status})` };
+            }
+            return await r.json() as OEMAPIResponse;
+        } catch {
+            return { success: false, notes: 'Verbindung zur OEM-Datenbank fehlgeschlagen.' };
+        }
     }, []);
 
     // ─── Processing (shared by both modes) ──────────────────────────
     const runProcessing = useCallback(async (part: string, vehicle: Record<string, string>) => {
+        // Hard gate: once the per-device lock is set, refuse to process anything.
+        if (demoUsed) return;
+
         setPhase('processing');
         setIsLoading(true);
-        setDemoUsed(true);
+        setApiError(null);
 
         setParticles(makeParticles(45));
         setShowParticles(true);
 
         if (tabMode === 'chat') {
-            await addBot('🔍 **KI-Analyse gestartet...**\n\nGemini analysiert Ihre Fahrzeugdaten und durchsucht die OEM-Datenbank...');
+            await addBot('🔍 **KI-Analyse gestartet...**\n\nUnser System durchsucht die Partsunion OEM-Datenbank...');
         }
 
-        // Try real API first
+        // Query the real production database via Hydra v2 pipeline.
         const result = await callOEM(part, vehicle);
         await new Promise(r => setTimeout(r, 2800));
         setShowParticles(false);
 
-        let results: OEMResult[] = [];
+        const results: OEMResult[] = [];
 
-        // Use API results if available
         if (result.success && result.oem) {
-            results.push({ oem: result.oem, brand: 'OE/Original', confidence: 100 });
-            (result.candidates || []).slice(0, 4).forEach((c: any) => {
+            results.push({ oem: result.oem, brand: 'OE/Original', confidence: result.confidence || 100 });
+            (result.candidates || []).slice(0, 4).forEach((c) => {
                 const o = c.oemNumber || c.oem || c.number;
-                if (o && o !== result.oem) results.push({ oem: o, brand: c.brand || 'Aftermarket', confidence: c.confidence || 90, note: c.note });
+                if (o && o !== result.oem) {
+                    results.push({
+                        oem: o,
+                        brand: c.brand || 'Aftermarket',
+                        confidence: c.confidence || 90,
+                        note: c.note,
+                    });
+                }
             });
-        }
-
-        // ★ FALLBACK: If API failed or returned nothing, use demo database
-        if (results.length === 0) {
-            let makeName = vehicle.make || 'Volkswagen';
-            if (!vehicle.make && vehicle.vin) {
-                const prefix = vehicle.vin.substring(0, 3).toUpperCase();
-                if (prefix === 'WBA' || prefix === 'WBS') makeName = 'BMW';
-                else if (prefix === 'WVW' || prefix === 'WV2') makeName = 'Volkswagen';
-                else if (prefix === 'WDB' || prefix === 'WDC' || prefix === 'WDD') makeName = 'Mercedes-Benz';
-                else if (prefix === 'WAU' || prefix === 'WUA') makeName = 'Audi';
-                else if (prefix === 'W0L') makeName = 'Opel';
-                else if (prefix === 'WF0') makeName = 'Ford';
-            }
-            results = getDemoOEM(makeName, part);
         }
 
         setOemResults(results);
 
-        if (tabMode === 'chat') {
-            await addBot(
-                `✅ **Teileermittlung abgeschlossen!**\n\nGesuchtes Teil: **${part}**` +
-                (vehicle.vin ? `\nVIN: \`${vehicle.vin}\`` : '') +
-                (vehicle.make ? `\nFahrzeug: **${vehicle.make} ${vehicle.model || ''} ${vehicle.year ? `(${vehicle.year})` : ''}**` : '') +
-                (vehicle.engine ? `\nMotor: **${vehicle.engine}**` : ''),
-                { results }
-            );
-        }
+        // ONLY lock the demo on a successful lookup. A failed API call should
+        // let the user retry instead of burning their one free query.
+        if (results.length > 0) {
+            setDemoUsed(true);
+            try {
+                localStorage.setItem(DEMO_LOCK_KEY, JSON.stringify({
+                    part,
+                    results,
+                    lockedAt: new Date().toISOString(),
+                }));
+            } catch { /* localStorage unavailable → degrade to session lock */ }
 
-        setPhase('locked');
-        setIsLoading(false);
-        setTimeout(() => setShowCTA(true), 1500);
-    }, [addBot, callOEM, tabMode]);
+            if (tabMode === 'chat') {
+                await addBot(
+                    `✅ **Teileermittlung abgeschlossen!**\n\nGesuchtes Teil: **${part}**` +
+                    (vehicle.vin ? `\nVIN: \`${vehicle.vin}\`` : '') +
+                    (vehicle.make ? `\nFahrzeug: **${vehicle.make} ${vehicle.model || ''} ${vehicle.year ? `(${vehicle.year})` : ''}**` : '') +
+                    (vehicle.engine ? `\nMotor: **${vehicle.engine}**` : ''),
+                    { results }
+                );
+            }
+
+            setPhase('locked');
+            setIsLoading(false);
+            // Show the non-dismissible "book a consultation" overlay.
+            setTimeout(() => setShowCTA(true), 1500);
+        } else {
+            // API failure — show an error, stay in current phase so user can retry.
+            const errMsg = result.notes || 'Keine Treffer in der OEM-Datenbank.';
+            setApiError(errMsg);
+            if (tabMode === 'chat') {
+                await addBot(
+                    `⚠️ **Teileermittlung fehlgeschlagen**\n\n${errMsg}\n\nBitte prüfen Sie Ihre Eingaben und versuchen Sie es erneut.`
+                );
+            }
+            setPhase('part_input');
+            setIsLoading(false);
+        }
+    }, [addBot, callOEM, tabMode, demoUsed]);
 
     // ─── Dropdown Submit ────────────────────────────────────────────
     const handleDropdownSubmit = () => {
@@ -667,11 +614,14 @@ export function LiveDemoChat() {
                 </div>
             )}
 
-            {/* ── CTA Popup ────────────────────────────────────────── */}
+            {/* ── CTA Popup — NON-DISMISSIBLE after successful lookup ────
+                 Once the demo has been used on this device, the only path forward
+                 is the "Beratung vereinbaren" button. No backdrop close, no dismiss
+                 button — this prevents unlimited free lookups per visitor. */}
             {showCTA && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center p-4" onClick={() => setShowCTA(false)}>
-                    <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
-                    <div className="relative glass border border-[var(--accent)]/30 rounded-3xl p-8 max-w-md w-full text-center shadow-2xl" onClick={e => e.stopPropagation()} style={{ animation: 'popIn .4s cubic-bezier(.16,1,.3,1) forwards' }}>
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+                    <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
+                    <div className="relative glass border border-[var(--accent)]/30 rounded-3xl p-8 max-w-md w-full text-center shadow-2xl" style={{ animation: 'popIn .4s cubic-bezier(.16,1,.3,1) forwards' }}>
                         <div className="w-16 h-16 mx-auto mb-4 rounded-2xl gradient-primary flex items-center justify-center shadow-lg shadow-[var(--primary)]/30">
                             <CheckCircle2 className="h-8 w-8 text-white" />
                         </div>
@@ -680,12 +630,12 @@ export function LiveDemoChat() {
                             Sie haben gesehen, wie unsere KI in Sekunden das passende Teil findet.
                             <br /><strong className="text-[var(--foreground)]">Möchten Sie das für Ihr Unternehmen?</strong>
                         </p>
-                        <a href="/contact" className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl gradient-primary text-white font-semibold shadow-lg shadow-[var(--primary)]/30 hover:shadow-xl transition-all hover:-translate-y-0.5">
+                        <a href="/contact" className="inline-flex items-center justify-center gap-2 w-full px-8 py-3.5 rounded-xl gradient-primary text-white font-semibold shadow-lg shadow-[var(--primary)]/30 hover:shadow-xl transition-all hover:-translate-y-0.5">
                             <Phone className="h-4 w-4" /> Beratung vereinbaren <ArrowRight className="h-4 w-4" />
                         </a>
-                        <button onClick={() => setShowCTA(false)} className="block mx-auto mt-4 text-xs text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors">
-                            Ergebnis nochmal ansehen
-                        </button>
+                        <p className="mt-4 text-[11px] text-[var(--muted-foreground)]/70">
+                            Die kostenlose Abfrage ist pro Gerät auf eine Anfrage begrenzt.
+                        </p>
                     </div>
                 </div>
             )}
@@ -792,6 +742,13 @@ export function LiveDemoChat() {
                             >
                                 {isLoading ? <><Loader2 className="h-4 w-4 animate-spin" /> KI analysiert...</> : <><Sparkles className="h-4 w-4" /> Teil ermitteln</>}
                             </button>
+
+                            {/* API error banner (dropdown mode) */}
+                            {apiError && !isLoading && phase !== 'locked' && (
+                                <div className="p-3 rounded-xl bg-[var(--error)]/10 border border-[var(--error)]/30 text-[var(--error)] text-xs">
+                                    ⚠️ {apiError}
+                                </div>
+                            )}
 
                             {/* Results (dropdown mode) */}
                             {phase === 'locked' && oemResults.length > 0 && (
@@ -901,7 +858,7 @@ export function LiveDemoChat() {
                     </div>
                 )}
 
-                <p className="text-center text-[10px] text-[var(--muted-foreground)]/40 mt-2">Powered by Gemini AI · Eine Abfrage pro Session</p>
+                <p className="text-center text-[10px] text-[var(--muted-foreground)]/40 mt-2">Powered by Gemini AI · Eine kostenlose Abfrage pro Gerät</p>
             </div>
 
             <style jsx global>{`

@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { X, Check, ArrowRight, Clock, AlertTriangle, TrendingDown, Zap, ShieldCheck, TrendingUp } from 'lucide-react';
+import { ArrowRight, AlertTriangle, Zap } from 'lucide-react';
 
 const comparisons = [
     {
@@ -66,8 +66,8 @@ export function BeforeAfter() {
                     viewport={{ once: true }}
                     className="max-w-4xl mx-auto"
                 >
-                    {/* Header Row */}
-                    <div className="grid grid-cols-3 gap-4 mb-4 px-4">
+                    {/* Header Row — desktop only. On mobile, each row gets its own header chips. */}
+                    <div className="hidden md:grid md:grid-cols-3 gap-4 mb-4 px-4">
                         <div />
                         <div className="text-center">
                             <div className="inline-flex items-center gap-1.5 py-1.5 px-4 rounded-full bg-error/10 border border-error/20">
@@ -83,6 +83,18 @@ export function BeforeAfter() {
                         </div>
                     </div>
 
+                    {/* Mobile header chips (shown once, above the stack) */}
+                    <div className="flex md:hidden justify-center gap-2 mb-4">
+                        <div className="inline-flex items-center gap-1.5 py-1 px-3 rounded-full bg-error/10 border border-error/20">
+                            <AlertTriangle className="h-3 w-3 text-error" />
+                            <span className="text-xs font-semibold text-error">Ohne</span>
+                        </div>
+                        <div className="inline-flex items-center gap-1.5 py-1 px-3 rounded-full bg-success/10 border border-success/20">
+                            <Zap className="h-3 w-3 text-success" />
+                            <span className="text-xs font-semibold text-success">Mit Partsunion</span>
+                        </div>
+                    </div>
+
                     {/* Comparison Rows */}
                     <div className="space-y-3">
                         {comparisons.map((comp, index) => (
@@ -92,30 +104,52 @@ export function BeforeAfter() {
                                 whileInView={{ opacity: 1, x: 0 }}
                                 transition={{ duration: 0.4, delay: index * 0.1 }}
                                 viewport={{ once: true }}
-                                className="grid grid-cols-3 gap-3 md:gap-4 items-center p-4 md:p-5 rounded-xl glass border border-border/50 hover:border-primary/20 transition-all"
+                                className="p-4 md:p-5 rounded-xl glass border border-border/50 hover:border-primary/20 transition-all"
                             >
-                                {/* Category */}
-                                <div>
-                                    <span className="text-sm md:text-base font-semibold text-foreground">{comp.category}</span>
+                                {/* Mobile layout: category on top, before/after below */}
+                                <div className="md:hidden">
+                                    <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-2">
+                                        {comp.category}
+                                    </div>
+                                    <div className="grid grid-cols-2 gap-3 items-center">
+                                        <div className="text-center py-2 rounded-lg bg-error/5 border border-error/10">
+                                            <div className="text-xl font-bold text-error/80" style={{ fontFamily: 'var(--font-display)' }}>
+                                                {comp.before.value}
+                                            </div>
+                                        </div>
+                                        <div className="text-center py-2 rounded-lg bg-success/5 border border-success/10">
+                                            <div className="text-xl font-bold text-success" style={{ fontFamily: 'var(--font-display)' }}>
+                                                {comp.after.value}
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
 
-                                {/* Before */}
-                                <div className="text-center">
-                                    <div className="text-lg md:text-2xl font-bold text-error/80 mb-0.5" style={{ fontFamily: 'var(--font-display)' }}>
-                                        {comp.before.value}
+                                {/* Desktop layout: 3-column grid */}
+                                <div className="hidden md:grid md:grid-cols-3 gap-4 items-center">
+                                    {/* Category */}
+                                    <div>
+                                        <span className="text-base font-semibold text-foreground">{comp.category}</span>
                                     </div>
-                                    <div className="text-[10px] md:text-xs text-muted-foreground hidden sm:block">
-                                        {comp.before.detail}
-                                    </div>
-                                </div>
 
-                                {/* After */}
-                                <div className="text-center">
-                                    <div className="text-lg md:text-2xl font-bold text-success mb-0.5" style={{ fontFamily: 'var(--font-display)' }}>
-                                        {comp.after.value}
+                                    {/* Before */}
+                                    <div className="text-center">
+                                        <div className="text-2xl font-bold text-error/80 mb-0.5" style={{ fontFamily: 'var(--font-display)' }}>
+                                            {comp.before.value}
+                                        </div>
+                                        <div className="text-xs text-muted-foreground">
+                                            {comp.before.detail}
+                                        </div>
                                     </div>
-                                    <div className="text-[10px] md:text-xs text-muted-foreground hidden sm:block">
-                                        {comp.after.detail}
+
+                                    {/* After */}
+                                    <div className="text-center">
+                                        <div className="text-2xl font-bold text-success mb-0.5" style={{ fontFamily: 'var(--font-display)' }}>
+                                            {comp.after.value}
+                                        </div>
+                                        <div className="text-xs text-muted-foreground">
+                                            {comp.after.detail}
+                                        </div>
                                     </div>
                                 </div>
                             </motion.div>
