@@ -20,6 +20,27 @@ export default function ImpressumPage() {
                     Deutschland
                 </p>
 
+                <h2>Vertreten durch</h2>
+                <p>
+                    {/* TODO: Geschäftsführer-Name hier eintragen */}
+                    Geschäftsführer: Alexander Blawat
+                </p>
+
+                <h2>Registereintrag</h2>
+                <p>
+                    {/* TODO: HRB-Nummer + Amtsgericht aus dem Handelsregisterauszug eintragen */}
+                    Eintragung im Handelsregister.<br />
+                    Registergericht: Amtsgericht Köln<br />
+                    Registernummer: HRB XXXXX
+                </p>
+
+                <h2>Umsatzsteuer-ID</h2>
+                <p>
+                    {/* TODO: USt-IdNr. vom Finanzamt eintragen (§ 27a UStG) */}
+                    Umsatzsteuer-Identifikationsnummer gemäß § 27a Umsatzsteuergesetz:<br />
+                    DE XXXXXXXXX
+                </p>
+
                 <h2>Kontakt</h2>
                 <p>
                     E-Mail: kontakt@partsunion.de<br />
