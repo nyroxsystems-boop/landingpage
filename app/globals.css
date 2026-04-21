@@ -1,5 +1,16 @@
 @import "tailwindcss";
 
+/* Tailwind v4 braucht eine explizite dark-Variant-Bindung, wenn sie über
+   eine Klasse am <html>-Element gesteuert wird (statt via OS-Preference).
+   Wir setzen <html class="dark"> in app/layout.tsx, damit `dark:`-Utilities
+   wie `dark:prose-invert` auf Legal-Pages zuverlässig greifen. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 80px;
+}
+
 :root {
   /* Premium Automotive Color Palette */
   --background: #0a0f1a;
@@ -74,6 +85,7 @@
   --color-border: var(--border);
   --font-sans: 'DM Sans', system-ui, sans-serif;
   --font-display: 'Outfit', 'DM Sans', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
 /* Base styles */

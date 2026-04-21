@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { DM_Sans, Outfit } from "next/font/google";
+import { DM_Sans, Outfit, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 
 const dmSans = DM_Sans({
@@ -12,6 +12,14 @@ const outfit = Outfit({
   variable: "--font-outfit",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700", "800"],
+});
+
+// JetBrains Mono — für Zahlen, OEM-Nummern und Preise im Industrial-Precision-Design
+// der Dashboard- und WaWi-Previews. Tabular-nums für spalten-ausgerichtete Zahlen.
+const jetbrainsMono = JetBrains_Mono({
+  variable: "--font-mono",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
@@ -69,7 +77,7 @@ export const metadata: Metadata = {
     siteName: "Partsunion",
     images: [
       {
-        url: "/logo.png",
+        url: "/og-image.png",
         width: 1200,
         height: 630,
         alt: "Partsunion – KI-Automatisierung für Autoteilehändler",
@@ -81,7 +89,7 @@ export const metadata: Metadata = {
     title: "Partsunion – KI-Automatisierung für Autoteilehändler",
     description:
       "OEM-Ermittlung in Sekunden, 24/7 WhatsApp-Bot und Warenwirtschaft für Autoteilehändler.",
-    images: ["/logo.png"],
+    images: ["/og-image.png"],
   },
   alternates: {
     canonical: "https://www.partsunion.de",
@@ -186,7 +194,7 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${dmSans.variable} ${outfit.variable} antialiased flex flex-col min-h-screen bg-background text-foreground`}
+        className={`${dmSans.variable} ${outfit.variable} ${jetbrainsMono.variable} antialiased flex flex-col min-h-screen bg-background text-foreground`}
       >
         <Navbar />
         <main className="flex-1">

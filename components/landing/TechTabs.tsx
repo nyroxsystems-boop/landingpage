@@ -41,7 +41,7 @@ const tabs = [
     },
     {
         id: 'wawi',
-        label: 'Warenwirtschaft',
+        label: 'Lager & WaWi',
         icon: Database,
         content: {
             title: 'Das Herzstück Ihres Handels',

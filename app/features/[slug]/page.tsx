@@ -20,9 +20,26 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const feature = featureData.find((f) => f.slug === finalParams.slug);
     if (!feature) return { title: 'Feature nicht gefunden' };
 
+    const url = `https://www.partsunion.de/features/${feature.slug}`;
     return {
         title: `${feature.title} - Partsunion Features`,
         description: feature.description,
+        alternates: { canonical: url },
+        openGraph: {
+            title: `${feature.title} | Partsunion`,
+            description: feature.description,
+            url,
+            type: 'article',
+            locale: 'de_DE',
+            siteName: 'Partsunion',
+            images: [{ url: '/og-image.png', width: 1200, height: 630, alt: feature.title }],
+        },
+        twitter: {
+            card: 'summary_large_image',
+            title: `${feature.title} | Partsunion`,
+            description: feature.description,
+            images: ['/og-image.png'],
+        },
     };
 }
 
@@ -67,8 +84,22 @@ export default async function FeatureDetailPage({ params }: Props) {
     const Icon = feature.icon;
     const isValueProp = feature.category === 'value';
 
+    const breadcrumbLd = {
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+            { '@type': 'ListItem', position: 1, name: 'Start', item: 'https://www.partsunion.de/' },
+            { '@type': 'ListItem', position: 2, name: 'Features', item: 'https://www.partsunion.de/features' },
+            { '@type': 'ListItem', position: 3, name: feature.title, item: `https://www.partsunion.de/features/${feature.slug}` },
+        ],
+    };
+
     return (
         <div className="pt-24 pb-20 overflow-x-hidden">
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }}
+            />
             {/* Background */}
             <div className="fixed inset-0 bg-gradient-to-b from-muted/20 via-background to-background -z-10" />
             <div className="fixed top-1/3 left-1/2 -translate-x-1/2 w-[800px] h-[600px] bg-primary/5 blur-[150px] rounded-full -z-10" />

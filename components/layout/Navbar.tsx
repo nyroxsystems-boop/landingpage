@@ -28,12 +28,25 @@ export function Navbar() {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
+    // Close dropdowns on Escape key
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key === 'Escape') {
+                setIsFeatureMenuOpen(false);
+                setIsMobileMenuOpen(false);
+            }
+        };
+        document.addEventListener('keydown', handleKeyDown);
+        return () => document.removeEventListener('keydown', handleKeyDown);
+    }, []);
+
     const navBackground = isHomePage
         ? (isScrolled ? 'bg-background/80 backdrop-blur-md border-b border-border' : 'bg-transparent')
         : 'bg-background/95 backdrop-blur-md border-b border-border';
 
     return (
         <nav
+            aria-label="Hauptnavigation"
             className={cn(
                 'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
                 navBackground
@@ -59,16 +72,22 @@ export function Navbar() {
                             className="relative group"
                             onMouseEnter={() => setIsFeatureMenuOpen(true)}
                             onMouseLeave={() => setIsFeatureMenuOpen(false)}
+                            onFocus={() => setIsFeatureMenuOpen(true)}
+                            onBlur={(e) => {
+                                if (!e.currentTarget.contains(e.relatedTarget)) setIsFeatureMenuOpen(false);
+                            }}
                         >
                             <Link
                                 href="/features"
                                 className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors flex items-center gap-1 py-4"
+                                aria-expanded={isFeatureMenuOpen}
+                                aria-haspopup="true"
                             >
-                                Features <ChevronDown className="h-4 w-4" />
+                                Features <ChevronDown className="h-4 w-4" aria-hidden="true" />
                             </Link>
 
                             {/* Dropdown Menu */}
-                            <div className={cn(
+                            <div role="menu" aria-label="Features Untermenü" className={cn(
                                 "absolute top-full left-0 w-72 glass border border-border rounded-xl shadow-xl p-3 transition-all duration-200 transform origin-top-left",
                                 isFeatureMenuOpen ? "opacity-100 scale-100 translate-y-0" : "opacity-0 scale-95 -translate-y-2 pointer-events-none"
                             )}>
@@ -137,24 +156,29 @@ export function Navbar() {
                             Login
                         </a>
 
-                        <Button variant="primary" size="sm" className="gradient-primary shadow-md shadow-primary/20">
-                            Beratung vereinbaren
-                        </Button>
+                        <Link href="/#beratung">
+                            <Button variant="primary" size="sm" className="gradient-primary shadow-md shadow-primary/20">
+                                Beratung vereinbaren
+                            </Button>
+                        </Link>
                     </div>
 
                     {/* Mobile Menu Toggle */}
                     <button
                         className="md:hidden p-2 text-foreground"
                         onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                        aria-label={isMobileMenuOpen ? 'Menü schließen' : 'Menü öffnen'}
+                        aria-expanded={isMobileMenuOpen}
+                        aria-controls="mobile-menu"
                     >
-                        {isMobileMenuOpen ? <X /> : <Menu />}
+                        {isMobileMenuOpen ? <X aria-hidden="true" /> : <Menu aria-hidden="true" />}
                     </button>
                 </div>
             </div>
 
             {/* Mobile Menu */}
             {isMobileMenuOpen && (
-                <div className="md:hidden glass border-b border-border p-4 max-h-[80vh] overflow-y-auto shadow-2xl">
+                <div id="mobile-menu" role="navigation" aria-label="Mobile Navigation" className="md:hidden glass border-b border-border p-4 max-h-[80vh] overflow-y-auto shadow-2xl">
                     <div className="flex flex-col gap-4">
                         <div className="font-bold text-primary mb-2">Features</div>
                         <div className="pl-4 border-l-2 border-primary/20 flex flex-col gap-3">
@@ -208,7 +232,9 @@ export function Navbar() {
                             <LogIn className="h-4 w-4" />
                             Login
                         </a>
-                        <Button className="w-full mt-4 gradient-primary">Beratung vereinbaren</Button>
+                        <Link href="/#beratung" onClick={() => setIsMobileMenuOpen(false)}>
+                            <Button className="w-full mt-4 gradient-primary">Beratung vereinbaren</Button>
+                        </Link>
                     </div>
                 </div>
             )}

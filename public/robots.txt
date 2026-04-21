@@ -1,4 +1,28 @@
+# Standard-Crawler: vollständig erlauben
 User-agent: *
 Allow: /
+
+# KI-Scraper: Content-Nutzung untersagen (keine Google-Search-Auswirkung,
+# blockt nur LLM-Training/RAG-Indexierung durch bekannte KI-Crawler)
+User-agent: GPTBot
+Disallow: /
+
+User-agent: Google-Extended
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
+User-agent: anthropic-ai
+Disallow: /
+
+User-agent: ClaudeBot
+Disallow: /
+
+User-agent: PerplexityBot
+Disallow: /
+
+User-agent: Bytespider
+Disallow: /
 
 Sitemap: https://www.partsunion.de/sitemap.xml

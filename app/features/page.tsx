@@ -5,7 +5,34 @@ import { ArrowRight, Sparkles, Zap } from 'lucide-react';
 
 export const metadata: Metadata = {
     title: 'Features - Partsunion',
-    description: 'Entdecken Sie die leistungsstarken KI-Funktionen von Partsunion: WhatsApp-Bot, OEM-Ermittlung und intelligente Warenwirtschaft.',
+    description:
+        'Entdecken Sie die leistungsstarken KI-Funktionen von Partsunion: WhatsApp-Bot, OEM-Ermittlung und intelligente Warenwirtschaft.',
+    alternates: { canonical: 'https://www.partsunion.de/features' },
+    openGraph: {
+        title: 'Features | Partsunion',
+        description:
+            'WhatsApp-Bot, OEM-Ermittlung, Warenwirtschaft, Retourenmanagement — die KI-Toolchain für Autoteilehändler.',
+        url: 'https://www.partsunion.de/features',
+        type: 'website',
+        locale: 'de_DE',
+        siteName: 'Partsunion',
+        images: [{ url: '/og-image.png', width: 1200, height: 630, alt: 'Partsunion Features' }],
+    },
+    twitter: {
+        card: 'summary_large_image',
+        title: 'Features | Partsunion',
+        description: 'Die KI-Toolchain für den modernen Teilehandel.',
+        images: ['/og-image.png'],
+    },
+};
+
+const breadcrumbLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Start', item: 'https://www.partsunion.de/' },
+        { '@type': 'ListItem', position: 2, name: 'Features', item: 'https://www.partsunion.de/features' },
+    ],
 };
 
 export default function FeaturesPage() {
@@ -14,6 +41,10 @@ export default function FeaturesPage() {
 
     return (
         <div className="pt-20">
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }}
+            />
             {/* Hero Section */}
             <section className="py-20 md:py-28 relative overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-b from-muted/30 via-background to-background" />

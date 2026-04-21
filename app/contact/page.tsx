@@ -1,12 +1,30 @@
 import { Metadata } from 'next';
 import { Mail, MapPin } from 'lucide-react';
-import { Button } from '@/components/ui/Button';
 import { ContactForm } from './ContactForm';
 
 export const metadata: Metadata = {
     title: 'Kontakt - Partsunion',
     description:
         'Sprechen Sie mit uns. Wir beraten Sie gerne zur Digitalisierung Ihres Teilehandels.',
+    alternates: {
+        canonical: 'https://www.partsunion.de/contact',
+    },
+    openGraph: {
+        title: 'Kontakt | Partsunion',
+        description:
+            'Sprechen Sie mit uns. Wir beraten Sie gerne zur Digitalisierung Ihres Teilehandels.',
+        url: 'https://www.partsunion.de/contact',
+        type: 'website',
+        locale: 'de_DE',
+        siteName: 'Partsunion',
+        images: [{ url: '/og-image.png', width: 1200, height: 630, alt: 'Partsunion Kontakt' }],
+    },
+    twitter: {
+        card: 'summary_large_image',
+        title: 'Kontakt | Partsunion',
+        description: 'Sprechen Sie mit uns zur Digitalisierung Ihres Teilehandels.',
+        images: ['/og-image.png'],
+    },
 };
 
 export default function ContactPage() {
@@ -36,7 +54,7 @@ export default function ContactPage() {
                                 <Mail className="h-6 w-6 text-primary mt-1" />
                                 <div>
                                     <h3 className="font-bold">E-Mail</h3>
-                                    <p className="text-muted-foreground">anfrage@partsunion.de</p>
+                                    <p className="text-muted-foreground">info@partsunion.de</p>
                                 </div>
                             </div>
 
@@ -58,9 +76,12 @@ export default function ContactPage() {
                                     Als Kunde finden Sie schnelle Hilfe in unserem Support-Center oder
                                     direkt im Dashboard.
                                 </p>
-                                <Button variant="outline" size="sm">
+                                <a
+                                    href="https://app.partsunion.de"
+                                    className="inline-flex items-center justify-center h-9 px-4 text-sm font-medium rounded-lg border border-input bg-transparent hover:bg-accent hover:text-accent-foreground transition-colors"
+                                >
                                     Zum Support-Center
-                                </Button>
+                                </a>
                             </div>
                         </div>
                     </div>

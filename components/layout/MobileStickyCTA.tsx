@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { Button } from '@/components/ui/Button';
 import { MessageCircle } from 'lucide-react';
 import { motion, useScroll, useMotionValueEvent } from 'framer-motion';
@@ -20,10 +21,12 @@ export function MobileStickyCTA() {
             animate={{ y: visible ? 0 : 100 }}
             className="fixed bottom-0 left-0 right-0 p-4 bg-background/80 backdrop-blur-lg border-t border-border z-50 md:hidden"
         >
-            <Button className="w-full shadow-lg h-12 text-lg font-bold" size="lg">
-                <MessageCircle className="mr-2 h-5 w-5" />
-                Jetzt Beratung buchen
-            </Button>
+            <Link href="/#beratung" className="block">
+                <Button className="w-full shadow-lg h-12 text-lg font-bold" size="lg">
+                    <MessageCircle className="mr-2 h-5 w-5" />
+                    Jetzt Beratung buchen
+                </Button>
+            </Link>
         </motion.div>
     );
 }

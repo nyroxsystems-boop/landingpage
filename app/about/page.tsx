@@ -4,7 +4,24 @@ import Link from 'next/link';
 
 export const metadata: Metadata = {
     title: 'Über Uns - Partsunion',
-    description: 'Unsere Mission: Den Autoteilehandel mit KI-Technologie revolutionieren. Ein Team aus Branchenexperten und Software-Entwicklern.',
+    description:
+        'Unsere Mission: Den Autoteilehandel mit KI-Technologie revolutionieren. Ein Team aus Branchenexperten und Software-Entwicklern.',
+    alternates: { canonical: 'https://www.partsunion.de/about' },
+    openGraph: {
+        title: 'Über uns | Partsunion',
+        description: 'Von Teilehändlern. Für Teilehändler. Das Team hinter Partsunion.',
+        url: 'https://www.partsunion.de/about',
+        type: 'website',
+        locale: 'de_DE',
+        siteName: 'Partsunion',
+        images: [{ url: '/og-image.png', width: 1200, height: 630, alt: 'Partsunion Team' }],
+    },
+    twitter: {
+        card: 'summary_large_image',
+        title: 'Über uns | Partsunion',
+        description: 'Von Teilehändlern. Für Teilehändler.',
+        images: ['/og-image.png'],
+    },
 };
 
 export default function AboutPage() {

@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { Button } from '@/components/ui/Button';
+import { submitLead } from '@/lib/leads';
 import { CheckCircle2, Send } from 'lucide-react';
 
 /**
@@ -41,29 +42,15 @@ export function ContactForm() {
 
         setIsSubmitting(true);
         try {
-            // Map the contact-form field names to the shared /api/leads schema
-            // so the backend CRM integration stays uniform across all forms.
-            const payload = {
+            await submitLead({
                 firma: formState.unternehmen || '—',
                 ansprechpartner: `${formState.vorname} ${formState.nachname}`.trim() || '—',
-                telefon: '—',
+                telefon: '',
                 email: formState.email,
                 nachricht: formState.nachricht,
                 source: 'contact-page',
                 consent: true,
-            };
-
-            const response = await fetch('/api/leads', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload),
             });
-
-            const data = await response.json().catch(() => ({}));
-            if (!response.ok) {
-                throw new Error(data.error || `Fehler: HTTP ${response.status}`);
-            }
-
             setIsSubmitted(true);
         } catch (err: unknown) {
             const message =

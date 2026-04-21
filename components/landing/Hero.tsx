@@ -1,9 +1,20 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import Link from 'next/link';
+import dynamic from 'next/dynamic';
 import { Button } from '@/components/ui/Button';
-import { ArrowRight, Sparkles, Zap, Clock, Bot, ShieldCheck, TrendingUp } from 'lucide-react';
-import { DashboardPreview } from '@/components/landing/DashboardPreview';
+import { ArrowRight, Sparkles, Clock, Bot, ShieldCheck, TrendingUp } from 'lucide-react';
+
+const DashboardPreview = dynamic(
+    () => import('@/components/landing/DashboardPreview').then(m => m.DashboardPreview),
+    {
+        ssr: false,
+        loading: () => (
+            <div className="w-full rounded-xl bg-[hsl(224_71%_4%)] min-h-[520px] animate-pulse" />
+        ),
+    }
+);
 
 export function Hero() {
     return (
@@ -59,7 +70,7 @@ export function Hero() {
                                     <Bot className="h-4 w-4 text-emerald-400" />
                                 </div>
                                 <span className="text-muted-foreground">
-                                    <strong className="text-foreground">89%</strong> Automatisierung
+                                    <strong className="text-foreground">bis zu 89%</strong> Automatisierung
                                 </span>
                             </div>
                             <div className="flex items-center gap-2 text-sm">
@@ -67,7 +78,7 @@ export function Hero() {
                                     <ShieldCheck className="h-4 w-4 text-violet-400" />
                                 </div>
                                 <span className="text-muted-foreground">
-                                    <strong className="text-foreground">97,8%</strong> OEM-Trefferquote
+                                    <strong className="text-foreground">97,8%</strong> OEM-Trefferquote im Pilot
                                 </span>
                             </div>
                             <div className="flex items-center gap-2 text-sm">
@@ -75,7 +86,7 @@ export function Hero() {
                                     <TrendingUp className="h-4 w-4 text-blue-400" />
                                 </div>
                                 <span className="text-muted-foreground">
-                                    <strong className="text-foreground">3x</strong> mehr Kapazität
+                                    <strong className="text-foreground">3× Kapazität</strong> möglich
                                 </span>
                             </div>
                             <div className="flex items-center gap-2 text-sm">
@@ -95,20 +106,24 @@ export function Hero() {
                             transition={{ duration: 0.6, delay: 0.3 }}
                             className="flex flex-col sm:flex-row items-center justify-center gap-4"
                         >
-                            <Button
-                                size="lg"
-                                className="w-full sm:w-auto h-14 text-lg px-8 gradient-primary shadow-lg shadow-primary/25 group"
-                            >
-                                Kostenlos beraten lassen
-                                <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
-                            </Button>
-                            <Button
-                                variant="outline"
-                                size="lg"
-                                className="w-full sm:w-auto h-14 text-lg px-8 glass border-border/50 hover:border-primary/50"
-                            >
-                                Live Demo ansehen
-                            </Button>
+                            <Link href="/#beratung" className="w-full sm:w-auto">
+                                <Button
+                                    size="lg"
+                                    className="w-full sm:w-auto h-14 text-lg px-8 gradient-primary shadow-lg shadow-primary/25 group"
+                                >
+                                    Kostenlos beraten lassen
+                                    <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
+                                </Button>
+                            </Link>
+                            <Link href="/live-demo" className="w-full sm:w-auto">
+                                <Button
+                                    variant="outline"
+                                    size="lg"
+                                    className="w-full sm:w-auto h-14 text-lg px-8 glass border-border/50 hover:border-primary/50"
+                                >
+                                    Live Demo ansehen
+                                </Button>
+                            </Link>
                         </motion.div>
 
                         {/* Trust Indicator */}

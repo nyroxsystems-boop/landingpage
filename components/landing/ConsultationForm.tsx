@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/Button';
+import { submitLead } from '@/lib/leads';
 import {
     Send,
     Phone,
@@ -43,18 +44,11 @@ export function ConsultationForm() {
         }
 
         try {
-            const response = await fetch('/api/leads', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ ...formState, consent: true }),
+            await submitLead({
+                ...formState,
+                source: 'beratung',
+                consent: true,
             });
-
-            const data = await response.json();
-
-            if (!response.ok) {
-                throw new Error(data.error || 'Etwas ist schiefgelaufen.');
-            }
-
             setIsSubmitted(true);
         } catch (err: unknown) {
             const message = err instanceof Error ? err.message : 'Anfrage konnte nicht gesendet werden. Bitte versuchen Sie es erneut.';
